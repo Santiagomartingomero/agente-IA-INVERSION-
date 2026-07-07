@@ -1,19 +1,15 @@
 """
 Orquesta la revisión diaria de la cartera:
 1. Lee state.json (posiciones, precios de entrada, última revisión).
-2. Obtiene precios actuales (FMP para acciones, CoinGecko para BTC).
+2. Obtiene precios actuales (Yahoo Finance para acciones, CoinGecko para BTC).
 3. Construye el prompt combinando prompt_base.md + estado + precios actuales.
 4. Llama a la API de Claude (con web_search activado) para el análisis.
 5. Parsea el bloque JSON de actualización de señales al final de la respuesta.
 6. Actualiza y persiste state.json.
 7. Regenera docs/index.html (página de GitHub Pages) con el semáforo y el análisis.
-8. Envía el resultado a Telegram.
 
-Requiere variables de entorno:
+Requiere variable de entorno:
 - ANTHROPIC_API_KEY
-- FMP_API_KEY
-- TELEGRAM_BOT_TOKEN
-- TELEGRAM_CHAT_ID
 """
 
 import os
@@ -25,7 +21,6 @@ from pathlib import Path
 import anthropic
 
 from fetch_prices import fetch_stock_prices, fetch_btc_price_eur
-from send_telegram import send_message
 from generate_page import build_html
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -164,7 +159,7 @@ def main():
     save_state(state)
     print("Estado actualizado y guardado.")
 
-    # Quita el bloque JSON técnico antes de enviarlo a Telegram, para no ensuciar el mensaje.
+    # Quita el bloque JSON técnico antes de publicarlo en la página.
     respuesta_limpia = re.sub(r"```json.*?```", "", respuesta, flags=re.DOTALL).strip()
 
     DOCS_DIR.mkdir(exist_ok=True)
@@ -172,9 +167,6 @@ def main():
         build_html(state, contexto, respuesta_limpia, fecha_iso), encoding="utf-8"
     )
     print("Página docs/index.html regenerada.")
-
-    send_message(respuesta_limpia)
-    print("Enviado a Telegram.")
 
 
 if __name__ == "__main__":

@@ -1,15 +1,12 @@
 """
-Obtiene precios actuales de las posiciones de Capa 2 (acciones) vía Financial Modeling Prep,
-y precio de BTC vía CoinGecko (gratis, sin API key).
-
-Requiere variable de entorno FMP_API_KEY (plan gratuito: 250 req/día).
+Obtiene precios actuales de las posiciones de Capa 2 (acciones) vía Yahoo Finance
+(endpoint público, sin API key), y precio de BTC vía CoinGecko (gratis, sin API key).
 """
 
-import os
 import requests
 
-FMP_API_KEY = os.environ.get("FMP_API_KEY")
-FMP_BASE_URL = "https://financialmodelingprep.com/api/v3"
+YAHOO_CHART_URL = "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+YAHOO_HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; AgenteCartera/1.0)"}
 
 TICKERS_CAPA_2 = ["CIFR", "LEU", "OKLO", "CRDO", "IREN"]
 
@@ -19,27 +16,28 @@ def fetch_stock_prices(tickers=None):
     if tickers is None:
         tickers = TICKERS_CAPA_2
 
-    if not FMP_API_KEY:
-        raise RuntimeError(
-            "Falta la variable de entorno FMP_API_KEY. "
-            "Consíguela gratis en https://financialmodelingprep.com/developer/docs/ "
-            "y expórtala o añádela como GitHub Secret."
-        )
-
-    symbols = ",".join(tickers)
-    url = f"{FMP_BASE_URL}/quote/{symbols}?apikey={FMP_API_KEY}"
-
-    resp = requests.get(url, timeout=15)
-    resp.raise_for_status()
-    data = resp.json()
-
     result = {}
-    for item in data:
-        result[item["symbol"]] = {
-            "precio": item.get("price"),
-            "variacion_pct": item.get("changesPercentage"),
-            "variacion_abs": item.get("change"),
-            "nombre": item.get("name"),
+    for ticker in tickers:
+        url = YAHOO_CHART_URL.format(ticker=ticker)
+        resp = requests.get(
+            url, params={"interval": "1d", "range": "1d"}, headers=YAHOO_HEADERS, timeout=15
+        )
+        resp.raise_for_status()
+        meta = resp.json()["chart"]["result"][0]["meta"]
+
+        precio = meta.get("regularMarketPrice")
+        cierre_anterior = meta.get("previousClose") or meta.get("chartPreviousClose")
+        variacion_abs = None
+        variacion_pct = None
+        if precio is not None and cierre_anterior:
+            variacion_abs = round(precio - cierre_anterior, 2)
+            variacion_pct = round((precio / cierre_anterior - 1) * 100, 2)
+
+        result[ticker] = {
+            "precio": precio,
+            "variacion_pct": variacion_pct,
+            "variacion_abs": variacion_abs,
+            "nombre": meta.get("symbol"),
         }
     return result
 
@@ -64,12 +62,9 @@ def fetch_btc_price_eur():
 
 if __name__ == "__main__":
     print("Precios Capa 2 (acciones):")
-    try:
-        precios = fetch_stock_prices()
-        for ticker, info in precios.items():
-            print(f"  {ticker}: ${info['precio']} ({info['variacion_pct']}%)")
-    except RuntimeError as e:
-        print(f"  [!] {e}")
+    precios = fetch_stock_prices()
+    for ticker, info in precios.items():
+        print(f"  {ticker}: ${info['precio']} ({info['variacion_pct']}%)")
 
     print("\nPrecio BTC:")
     btc = fetch_btc_price_eur()

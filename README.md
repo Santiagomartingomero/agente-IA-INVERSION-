@@ -2,8 +2,8 @@
 
 Agente automatizado que revisa diariamente la cartera de Santiago (Capa 2: acciones temáticas
 IA infra/nuclear/compute + Capa 3: BTC), busca catalizadores recientes, aplica la regla de
-"tesis rota" (-25% sin catalizador negativo), y envía el análisis por Telegram con un semáforo
-de decisión por posición.
+"tesis rota" (-25% sin catalizador negativo), y publica el análisis con un semáforo de decisión
+por posición en una página web (GitHub Pages).
 
 ## Estructura
 
@@ -12,10 +12,9 @@ de decisión por posición.
 ├── prompt_base.md            # Prompt del analista (editar aquí para cambiar el criterio)
 ├── requirements.txt
 ├── src/
-│   ├── fetch_prices.py       # Precios vía Financial Modeling Prep + CoinGecko
+│   ├── fetch_prices.py       # Precios vía Yahoo Finance (acciones) + CoinGecko (BTC), sin API key
 │   ├── run_review.py         # Orquestador: junta todo, llama a Claude, actualiza estado
-│   ├── generate_page.py      # Genera docs/index.html con el semáforo + análisis del día
-│   └── send_telegram.py      # Envío del resultado al bot de Telegram
+│   └── generate_page.py      # Genera docs/index.html con el semáforo + análisis del día
 ├── docs/
 │   └── index.html            # Página publicada por GitHub Pages, se sobreescribe cada día
 └── .github/workflows/
@@ -24,25 +23,20 @@ de decisión por posición.
 
 ## Setup inicial
 
-### 1. Claves necesarias
+### 1. Clave necesaria
 
-- **Anthropic API key** — [console.anthropic.com](https://console.anthropic.com)
-- **Financial Modeling Prep API key** (gratis, 250 req/día) —
-  [financialmodelingprep.com/developer/docs](https://financialmodelingprep.com/developer/docs/)
-- **Telegram bot token y chat ID** — los que ya tienes configurados del sistema de noticias
-  diario existente.
+Solo hace falta una: la **Anthropic API key** de [console.anthropic.com](https://console.anthropic.com)
+(el script llama a la API de Claude, no a tu cuenta de claude.ai — requiere su propia clave con
+facturación asociada). Los precios de acciones y BTC se obtienen de fuentes públicas sin clave
+(Yahoo Finance y CoinGecko).
 
-### 2. Configurar GitHub Secrets
+### 2. Configurar el GitHub Secret
 
-En el repo: `Settings > Secrets and variables > Actions > New repository secret`. Añade:
+En el repo: `Settings > Secrets and variables > Actions > New repository secret`. Añade
+`ANTHROPIC_API_KEY` con el valor de tu clave.
 
-- `ANTHROPIC_API_KEY`
-- `FMP_API_KEY`
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_CHAT_ID`
-
-**Nunca** pongas estas claves directamente en el código ni en `.env` subido al repo —
-`.gitignore` ya excluye `.env` por seguridad.
+**Nunca** pongas esta clave directamente en el código ni en `.env` subido al repo —
+`.gitignore` ya lo excluye por seguridad.
 
 ### 3. Revisar y corregir `state.json`
 
@@ -63,16 +57,13 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 export ANTHROPIC_API_KEY=...
-export FMP_API_KEY=...
-export TELEGRAM_BOT_TOKEN=...
-export TELEGRAM_CHAT_ID=...
 
 python src/run_review.py
 ```
 
 ### 5. Activar el workflow
 
-Una vez los Secrets estén configurados, el workflow corre solo de lunes a viernes a las 07:30
+Una vez el Secret esté configurado, el workflow corre solo de lunes a viernes a las 07:30
 UTC. También puedes lanzarlo manualmente desde la pestaña **Actions > Revisión diaria de
 cartera > Run workflow** para probarlo sin esperar al cron.
 
