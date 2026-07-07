@@ -83,7 +83,10 @@ def build_context(state, precios_acciones, precio_btc):
 
 
 def call_claude(prompt_base, contexto):
-    client = anthropic.Anthropic()  # usa ANTHROPIC_API_KEY del entorno
+    # .strip(): algunos gestores de Secrets/portapapeles añaden un salto de línea al
+    # final de la clave pegada, lo que rompe la cabecera HTTP de autenticación.
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    client = anthropic.Anthropic(api_key=api_key)
 
     mensaje_usuario = (
         f"{prompt_base}\n\n"
