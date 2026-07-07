@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": "2026-07-07T20:28:29.244769+00:00",
+    "ultima_revision": "2026-07-07T20:37:11.988120+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Precios de entrada estimados por cálculo inverso (P&L % / precio actual) el 2026-07-07. Verificar contra el bróker y corregir a mano en cuanto se pueda."
   },
@@ -74,6 +74,11 @@
     {
       "fecha": "2026-07-07T20:28:29.244769+00:00",
       "resumen": "# Revisión Capa 2 + BTC — 07/07/2026\n\n## CIFR — Cipher Digital\n**$20.47 (-7.67% vs entrada $22.17)**. Ojo con precio de mercado real: cotiza en rango $19.51–$21.72 hoy, con último cierre en zona $20.68-$20.47 dependiendo de la fuente — hay ruido de feed, no es una caída adicional de un día.\n\nCatalizador estructural, no está en precio del todo: \nel primer tramo de 300 MW de capacidad de Cipher para AWS arranca en julio 2026, con inicio de renta en agosto, bajo un contrato de 15 años y $5.500M\n. E"
+    },
+    {
+      "fecha": "2026-07-07T20:37:11.988120+00:00",
+      "resumen": "# REVISIÓN CAPA 2 + BTC — 07/07/2026\n\n## CIFR — Cipher Digital · $20.47 (-7.67% vs entrada $22.17)\nVolatilidad brutal: \ntras cerrar cerca de $29 a mediados de junio, CIFR cayó a unos $19.97 el 2/07/2026\n, con un intradía del -12% por \nun Form 144 de un insider/tenedor mayoritario señalando intención de vender acciones restringidas\n combinado con reporte de brecha de ciberseguridad. Lunes 6/07 rebote fuerte: \nacciones subiendo 10.35% hasta $22.11\n en rotación de compradores de la caída tras comen",
+      "cortado_por_tokens": false
     }
   ]
 }
