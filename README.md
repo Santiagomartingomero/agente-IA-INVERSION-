@@ -14,7 +14,10 @@ de decisión por posición.
 ├── src/
 │   ├── fetch_prices.py       # Precios vía Financial Modeling Prep + CoinGecko
 │   ├── run_review.py         # Orquestador: junta todo, llama a Claude, actualiza estado
+│   ├── generate_page.py      # Genera docs/index.html con el semáforo + análisis del día
 │   └── send_telegram.py      # Envío del resultado al bot de Telegram
+├── docs/
+│   └── index.html            # Página publicada por GitHub Pages, se sobreescribe cada día
 └── .github/workflows/
     └── daily_review.yml      # Ejecución automática L-V a las 07:30 UTC
 ```
@@ -72,6 +75,18 @@ python src/run_review.py
 Una vez los Secrets estén configurados, el workflow corre solo de lunes a viernes a las 07:30
 UTC. También puedes lanzarlo manualmente desde la pestaña **Actions > Revisión diaria de
 cartera > Run workflow** para probarlo sin esperar al cron.
+
+### 6. Activar GitHub Pages (paso único, manual)
+
+El workflow genera `docs/index.html` en cada ejecución, pero publicarlo requiere activar Pages
+una sola vez: `Settings > Pages > Build and deployment > Source: Deploy from a branch`, rama
+`main` (o la que uses como base), carpeta `/docs`. Guarda. GitHub te dará una URL del tipo
+`https://<tu-usuario>.github.io/agente-IA-INVERSION-/`, que se actualizará sola en cada
+ejecución del cron.
+
+**Importante:** GitHub Pages es público por defecto — cualquiera con el link vería tu cartera,
+P&L y señales. Si prefieres mantenerlo privado, hazlo saber; la alternativa sencilla es leer
+`docs/index.html` (o el histórico en `state.json`) directamente desde el repo privado, sin Pages.
 
 ## Cómo funciona la persistencia de estado
 
