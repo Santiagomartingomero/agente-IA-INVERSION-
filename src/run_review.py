@@ -30,7 +30,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 STATE_PATH = REPO_ROOT / "state.json"
 PROMPT_PATH = REPO_ROOT / "prompt_base.md"
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 
 
 def load_state():
