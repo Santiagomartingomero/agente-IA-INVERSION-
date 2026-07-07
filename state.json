@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": null,
+    "ultima_revision": "2026-07-07T20:08:53.163001+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Precios de entrada estimados por cálculo inverso (P&L % / precio actual) el 2026-07-07. Verificar contra el bróker y corregir a mano en cuanto se pueda."
   },
@@ -66,5 +66,10 @@
     },
     "nota_pesos": "Rellenar pesos_objetivo (en %) cuando se decida la asignación estratégica. Sin esto el agente no puede detectar deriva de rebalanceo."
   },
-  "historial_revisiones": []
+  "historial_revisiones": [
+    {
+      "fecha": "2026-07-07T20:08:53.163001+00:00",
+      "resumen": ""
+    }
+  ]
 }
