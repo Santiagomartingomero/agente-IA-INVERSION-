@@ -5,145 +5,191 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Revisión diaria — Cartera</title>
 <style>
-  :root { color-scheme: light dark; }
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f8; --fg: #1c1c1e; --muted: #6b6b70; --card-bg: #ffffff; --border: #e5e5e7;
+    --verde-bg: #e6f4ea; --verde-fg: #1a7f37;
+    --ambar-bg: #fff7e0; --ambar-fg: #92600a;
+    --rojo-bg: #fdecea; --rojo-fg: #c0392b;
+    --azul-bg: #e8f0fe; --azul-fg: #1a56db;
+    --neutro-bg: #eeeeee; --neutro-fg: #6b6b70;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17181a; --fg: #f0f0f1; --muted: #9a9a9f; --card-bg: #232427; --border: #34353a;
+      --verde-bg: #16321f; --verde-fg: #4ade80;
+      --ambar-bg: #3a2c0a; --ambar-fg: #fbbf24;
+      --rojo-bg: #3a1a17; --rojo-fg: #f87171;
+      --azul-bg: #17233d; --azul-fg: #7fa6f7;
+      --neutro-bg: #2c2d31; --neutro-fg: #9a9a9f;
+    }
+  }
+  * { box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    max-width: 720px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    line-height: 1.5;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.55;
   }
-  h1 { font-size: 1.3rem; }
-  .fecha { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
-  table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
-  th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid #ddd; }
-  th { font-size: 0.85rem; color: #666; }
-  .pnl-pos { color: #1a7f37; }
-  .pnl-neg { color: #c0392b; }
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-family: inherit;
-    font-size: 0.95rem;
+  h1 { font-size: 1.35rem; margin-bottom: 0.2rem; }
+  .fecha { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2rem;
   }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+  }
+  .card .ticker { font-weight: 700; font-size: 1rem; }
+  .card .nombre { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.5rem; }
+  .card .precio { font-size: 1.1rem; font-weight: 600; }
+  .card .pnl { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .pnl.pos { color: var(--verde-fg); }
+  .pnl.neg { color: var(--rojo-fg); }
+  .badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+  }
+  .badge.verde { background: var(--verde-bg); color: var(--verde-fg); }
+  .badge.ambar { background: var(--ambar-bg); color: var(--ambar-fg); }
+  .badge.rojo { background: var(--rojo-bg); color: var(--rojo-fg); }
+  .badge.azul { background: var(--azul-bg); color: var(--azul-fg); }
+  .badge.neutro { background: var(--neutro-bg); color: var(--neutro-fg); }
+  article {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.5rem 1.5rem 1.25rem;
+  }
+  article h2 { font-size: 1.05rem; margin: 1.4rem 0 0.5rem; padding-top: 0.6rem; border-top: 1px solid var(--border); }
+  article h2:first-child { border-top: none; padding-top: 0; margin-top: 1rem; }
+  article h1 { font-size: 1.1rem; }
+  article hr { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+  article p { margin: 0.6rem 0; }
+  article ul { padding-left: 1.2rem; }
+  article em { color: var(--muted); }
+  article strong { color: var(--fg); }
+  footer { color: var(--muted); font-size: 0.8rem; margin-top: 1.5rem; text-align: center; }
 </style>
 </head>
 <body>
 <h1>Revisión diaria — Cartera IA / Cripto</h1>
 <div class="fecha">Última actualización: 2026-07-07 20:58 UTC</div>
-<table>
-  <tr><th>Posición</th><th>Entrada</th><th>Actual</th><th>P&amp;L</th><th>Señal</th></tr>
-  <tr><td>CIFR · Cipher Digital</td><td>22.17</td><td>20.47</td><td class="pnl-neg">-7.67%</td><td>🟡</td></tr>
-  <tr><td>LEU · Centrus Energy</td><td>175.57</td><td>165.64</td><td class="pnl-neg">-5.66%</td><td>🟢</td></tr>
-  <tr><td>OKLO · Oklo Inc</td><td>54.55</td><td>47.90</td><td class="pnl-neg">-12.19%</td><td>🟡</td></tr>
-  <tr><td>CRDO · Credo Technology</td><td>289.54</td><td>246.40</td><td class="pnl-neg">-14.90%</td><td>🟢</td></tr>
-  <tr><td>IREN · IREN Ltd</td><td>46.01</td><td>39.81</td><td class="pnl-neg">-13.46%</td><td>🟢</td></tr>
-  <tr><td>BTC · Bitcoin</td><td>55,240.00</td><td>55,747.00</td><td class="pnl-pos">+0.92%</td><td>🟡</td></tr>
-</table>
-<pre># Revisión Capa 2 + BTC — 07 Jul 2026
-
-## CIFR (Cipher Digital) — $20.47 (-7.67% desde entrada)
-Catalizadores mixtos desde inicio de mes:
-- **Negativo/ruido táctico**: 
-las acciones han bajado tras reportes de una brecha de ciberseguridad crítica, y un insider/tenedor mayoritario presentó un Form 144, señalizando intención de venta de acciones restringidas
-. Esto ya está parcialmente en precio — el valor cayó desde ~$29 a ~$20 en dos semanas.
-- **Estructural positivo, no descontado del todo**: 
-la compañía cerró recientemente una captación de deuda garantizada de $810 millones para su instalación Stingray, totalmente pre-arrendada bajo contrato a largo plazo a Amazon Web Services
-. Además, BTIG subió el precio objetivo a $35 desde $25, y Rosenblatt mantiene compra. El nombre cambió de Cipher Mining a Cipher Digital reflejando el pivote HPC/AI ya en marcha.
-- Lunes 6/7: 
-tras un selloff de doble dígito la semana anterior, los inversores empezaron a rotar capital de vuelta hacia estos valores de infraestructura de datos, con CIFR subiendo 10,35% a $22,11
-.
-
-Lectura: la tesis HPC/AWS se refuerza (contrato ancla institucional), pero el ruido de venta de insider + brecha de seguridad no está resuelto. Asimetría neutra-positiva, alta volatilidad táctica.
-
-## LEU (Centrus Energy) — $165.64 (-5.66%)
-Catalizador estructural mayor, no ruido:
-- 
-Centrus firmó un contrato para finalizar los términos de la orden de tarea de $900 millones adjudicada competitivamente por el Departamento de Energía, que respaldará el despliegue de capacidad de producción a gran escala de HALEU
-, con 
-valor potencial total del contrato de aproximadamente $1.07 mil millones
-.
-- 
-Centrus reporta un backlog existente de LEU de $2.4 mil millones que la nueva capacidad de enriquecimiento está destinada a ayudar a cumplir
-.
-- Adicionalmente, LOI firmado con OKLO (18 jun) para suministro de combustible HALEU para Aurora Powerhouse — refuerza el ecosistema cruzado de tu Capa 2.
-
-Esto es catalizador estructural en firme (contrato gubernamental con ingresos comprometidos), no momentum. Refuerza tesis con fuerza. La caída de precio no tiene justificación fundamental — parece rotación sectorial, no deterioro de tesis.
-
-## OKLO (Oklo Inc) — $47.90 (-12.19%)
-- 
-Oklo apunta a la primera criticidad de Groves en julio de 2026
-, tras 
-la aprobación del DOE que confirma las evaluaciones de riesgo, requisitos operativos y controles de seguridad del reactor, avanzando hacia la revisión final previa al arranque
-.
-- Craig-Hallum mantiene Hold. Adquisición de Creative Engineers (términos no revelados) — expande capacidades de ingeniería, no mueve la aguja de ingresos aún.
-- 
-OKLO cotiza cerca de $52 por acción, con un rango de 52 semanas de $44.80 a $193.84
- — volatilidad extrema típica del sector.
-
-Catalizador binario inminente (criticidad real en julio) aún no resuelto — no es momentum de 48h, es hito regulatorio estructural pendiente de confirmación operativa. No amplío antes del evento; el riesgo/recompensa se define cuando se confirme criticidad.
-
-## CRDO (Credo Technology) — $246.40 (-14.9%)
-Sin catalizador negativo identificable — al contrario:
-- 
-Los ingresos del año fiscal 2026 fueron de $1.34 mil millones, más que triplicando frente al año anterior, con ingresos netos non-GAAP de $661.5 millones y EPS diluido non-GAAP de $3.46; el cuarto trimestre alcanzó $437.0 millones, +7.4% secuencial y +157.0% interanual
-.
-- 
-La compañía terminó el año con $1.4 mil millones en efectivo e inversiones a corto plazo
-.
-- 
-El CEO Bill Brennan señaló tres nuevas oportunidades de mercado multimillonarias (ZeroFlap optics, Active Line Cards, OmniConnect), además de una colaboración con TensorWave, proveedor de nube AI enfocado en AMD
-.
-
-Esto es un caso de desconexión fundamental/precio: resultados en máximos históricos, guía sólida, y aun así -14.9% desde tu entrada — arrastrado por rotación sectorial de &quot;AI infra&quot; (mismo ruido que golpeó a CIFR/Nebius por comentarios sobre Meta construyendo compute propio). No cumple el criterio de &quot;revisar tesis&quot; (no hay catalizador negativo específico ni supera el -25%). Convicción alta de mantener/ampliar.
-
-## IREN Ltd — $39.815 (-13.46%)
-Contratación estructural masiva reciente, ninguna señal de deterioro:
-- 
-Contrato de $3.4 mil millones en AI Cloud con NVIDIA (5 años, GPUs Blackwell air-cooled) y asociación estratégica de 5GW con NVIDIA, que incluye un derecho de 5 años para que NVIDIA compre hasta 30 millones de acciones a $70, resultando en un derecho de inversión de hasta $2.1 mil millones
-.
-- 
-Al comisionarse, el contrato de AI cloud elevará el ARR anualizado de IREN de $3.7 mil millones a $4.4 mil millones
-.
-- 
-El interés en corto en IREN se sitúa actualmente en 64.4 millones de acciones, un aumento del 16.0% respecto al período anterior, representando el 18.7% del float
- — short squeeze potencial si el ARR se sigue confirmando trimestre a trimestre.
-
-Igual que CRDO: fundamentales y backlog contratado en expansión acelerada, precio cayendo por macro/rotación (proxy BTC + sector AI infra), no por deterioro de negocio. Máxima convicción de la Capa 2 ahora mismo.
-
-## BTC — atención: discrepancia de precio en tu estado
-Tu `state.json` marca precio actual $55,747 (pnl +0.92%), pero el mercado real cotiza muy por encima:
-- 
-Bitcoin cotiza en $64,033.85, subiendo 0.76% en 24 horas, con volumen un 104.7% por encima del promedio
-.
-- Contexto reciente: 
-Bitcoin comienza el segundo semestre cerca de $60,000 tras un mínimo fresco de 21 meses; el precio arrancó el año por encima de $93,000 y cerró junio alrededor de $60,000
-.
-- Flujos ETF girando: 
-los ETFs de bitcoin listados en EE.UU. registraron $221.7 millones en entradas, la mayor entrada diaria en dos meses, terminando una racha de 10 días de salidas; aun así, las salidas netas en lo que va de año siguen siendo pronunciadas, en unos $5.4 mil millones
-.
-- 
-Investigaciones citadas en cobertura de 2026 estiman que los flujos de ETF ahora explican aproximadamente el 45% de los movimientos semanales de precio de Bitcoin
-.
-- Próximos catalizadores: 
-audiencia del CLARITY Act el 17 de julio como próximo catalizador regulatorio
-, y 
-la próxima reunión de la Reserva Federal el 28-29 de julio bajo Warsh, con el dato de inflación de junio (14 de julio) como input crítico
-.
-
-Recomiendo que actualices tu precio de entrada/actual en el tracker — con precio real ~$63.500-64.000, tu P&amp;L real en BTC ronda +15% sobre $55,240 de entrada, no +0.92%. Esto también implica que IREN/CIFR como proxies apalancados de BTC tienen más colchón fundamental del que su cotización de acciones sugiere ahora mismo (BTC ya recuperó gran parte de la caída de junio, las mineras no tanto).
-
----
-
-## Semáforo
-
-🟡 CIFR — insider Form 144 + brecha de seguridad sin resolver, pero contrato AWS/Stingray refuerza tesis; vigilar volatilidad
+<div class="grid">
+  <div class="card">
+    <div class="ticker">CIFR</div>
+    <div class="nombre">Cipher Digital</div>
+    <div class="precio">20.47</div>
+    <div class="pnl neg">-7.67%</div>
+    <span class="badge ambar">🟡 Vigilar</span>
+  </div>
+  <div class="card">
+    <div class="ticker">LEU</div>
+    <div class="nombre">Centrus Energy</div>
+    <div class="precio">165.64</div>
+    <div class="pnl neg">-5.66%</div>
+    <span class="badge verde">🟢 Mantener / ampliar</span>
+  </div>
+  <div class="card">
+    <div class="ticker">OKLO</div>
+    <div class="nombre">Oklo Inc</div>
+    <div class="precio">47.90</div>
+    <div class="pnl neg">-12.19%</div>
+    <span class="badge ambar">🟡 Vigilar</span>
+  </div>
+  <div class="card">
+    <div class="ticker">CRDO</div>
+    <div class="nombre">Credo Technology</div>
+    <div class="precio">246.40</div>
+    <div class="pnl neg">-14.90%</div>
+    <span class="badge verde">🟢 Mantener / ampliar</span>
+  </div>
+  <div class="card">
+    <div class="ticker">IREN</div>
+    <div class="nombre">IREN Ltd</div>
+    <div class="precio">39.81</div>
+    <div class="pnl neg">-13.46%</div>
+    <span class="badge verde">🟢 Mantener / ampliar</span>
+  </div>
+  <div class="card">
+    <div class="ticker">BTC</div>
+    <div class="nombre">Bitcoin</div>
+    <div class="precio">55,747.00</div>
+    <div class="pnl pos">+0.92%</div>
+    <span class="badge ambar">🟡 Vigilar</span>
+  </div>
+</div>
+<article>
+<h1>Revisión Capa 2 + BTC — 07 Jul 2026</h1>
+<h2>CIFR (Cipher Digital) — $20.47 (-7.67% desde entrada)</h2>
+<p>Catalizadores mixtos desde inicio de mes:</p>
+<ul>
+<li><strong>Negativo/ruido táctico</strong>: las acciones han bajado tras reportes de una brecha de ciberseguridad crítica, y un insider/tenedor mayoritario presentó un Form 144, señalizando intención de venta de acciones restringidas. Esto ya está parcialmente en precio — el valor cayó desde ~$29 a ~$20 en dos semanas.</li>
+<li><strong>Estructural positivo, no descontado del todo</strong>: la compañía cerró recientemente una captación de deuda garantizada de $810 millones para su instalación Stingray, totalmente pre-arrendada bajo contrato a largo plazo a Amazon Web Services. Además, BTIG subió el precio objetivo a $35 desde $25, y Rosenblatt mantiene compra. El nombre cambió de Cipher Mining a Cipher Digital reflejando el pivote HPC/AI ya en marcha.</li>
+<li>Lunes 6/7: tras un selloff de doble dígito la semana anterior, los inversores empezaron a rotar capital de vuelta hacia estos valores de infraestructura de datos, con CIFR subiendo 10,35% a $22,11.</li>
+</ul>
+<p>Lectura: la tesis HPC/AWS se refuerza (contrato ancla institucional), pero el ruido de venta de insider + brecha de seguridad no está resuelto. Asimetría neutra-positiva, alta volatilidad táctica.</p>
+<h2>LEU (Centrus Energy) — $165.64 (-5.66%)</h2>
+<p>Catalizador estructural mayor, no ruido:</p>
+<ul>
+<li>Centrus firmó un contrato para finalizar los términos de la orden de tarea de $900 millones adjudicada competitivamente por el Departamento de Energía, que respaldará el despliegue de capacidad de producción a gran escala de HALEU, con valor potencial total del contrato de aproximadamente $1.07 mil millones.</li>
+<li>Centrus reporta un backlog existente de LEU de $2.4 mil millones que la nueva capacidad de enriquecimiento está destinada a ayudar a cumplir.</li>
+<li>Adicionalmente, LOI firmado con OKLO (18 jun) para suministro de combustible HALEU para Aurora Powerhouse — refuerza el ecosistema cruzado de tu Capa 2.</li>
+</ul>
+<p>Esto es catalizador estructural en firme (contrato gubernamental con ingresos comprometidos), no momentum. Refuerza tesis con fuerza. La caída de precio no tiene justificación fundamental — parece rotación sectorial, no deterioro de tesis.</p>
+<h2>OKLO (Oklo Inc) — $47.90 (-12.19%)</h2>
+<ul>
+<li>Oklo apunta a la primera criticidad de Groves en julio de 2026, tras la aprobación del DOE que confirma las evaluaciones de riesgo, requisitos operativos y controles de seguridad del reactor, avanzando hacia la revisión final previa al arranque.</li>
+<li>Craig-Hallum mantiene Hold. Adquisición de Creative Engineers (términos no revelados) — expande capacidades de ingeniería, no mueve la aguja de ingresos aún.</li>
+<li>OKLO cotiza cerca de $52 por acción, con un rango de 52 semanas de $44.80 a $193.84 — volatilidad extrema típica del sector.</li>
+</ul>
+<p>Catalizador binario inminente (criticidad real en julio) aún no resuelto — no es momentum de 48h, es hito regulatorio estructural pendiente de confirmación operativa. No amplío antes del evento; el riesgo/recompensa se define cuando se confirme criticidad.</p>
+<h2>CRDO (Credo Technology) — $246.40 (-14.9%)</h2>
+<p>Sin catalizador negativo identificable — al contrario:</p>
+<ul>
+<li>Los ingresos del año fiscal 2026 fueron de $1.34 mil millones, más que triplicando frente al año anterior, con ingresos netos non-GAAP de $661.5 millones y EPS diluido non-GAAP de $3.46; el cuarto trimestre alcanzó $437.0 millones, +7.4% secuencial y +157.0% interanual.</li>
+<li>La compañía terminó el año con $1.4 mil millones en efectivo e inversiones a corto plazo.</li>
+<li>El CEO Bill Brennan señaló tres nuevas oportunidades de mercado multimillonarias (ZeroFlap optics, Active Line Cards, OmniConnect), además de una colaboración con TensorWave, proveedor de nube AI enfocado en AMD.</li>
+</ul>
+<p>Esto es un caso de desconexión fundamental/precio: resultados en máximos históricos, guía sólida, y aun así -14.9% desde tu entrada — arrastrado por rotación sectorial de &quot;AI infra&quot; (mismo ruido que golpeó a CIFR/Nebius por comentarios sobre Meta construyendo compute propio). No cumple el criterio de &quot;revisar tesis&quot; (no hay catalizador negativo específico ni supera el -25%). Convicción alta de mantener/ampliar.</p>
+<h2>IREN Ltd — $39.815 (-13.46%)</h2>
+<p>Contratación estructural masiva reciente, ninguna señal de deterioro:</p>
+<ul>
+<li>Contrato de $3.4 mil millones en AI Cloud con NVIDIA (5 años, GPUs Blackwell air-cooled) y asociación estratégica de 5GW con NVIDIA, que incluye un derecho de 5 años para que NVIDIA compre hasta 30 millones de acciones a $70, resultando en un derecho de inversión de hasta $2.1 mil millones.</li>
+<li>Al comisionarse, el contrato de AI cloud elevará el ARR anualizado de IREN de $3.7 mil millones a $4.4 mil millones.</li>
+<li>El interés en corto en IREN se sitúa actualmente en 64.4 millones de acciones, un aumento del 16.0% respecto al período anterior, representando el 18.7% del float — short squeeze potencial si el ARR se sigue confirmando trimestre a trimestre.</li>
+</ul>
+<p>Igual que CRDO: fundamentales y backlog contratado en expansión acelerada, precio cayendo por macro/rotación (proxy BTC + sector AI infra), no por deterioro de negocio. Máxima convicción de la Capa 2 ahora mismo.</p>
+<h2>BTC — atención: discrepancia de precio en tu estado</h2>
+<p>Tu <code>state.json</code> marca precio actual $55,747 (pnl +0.92%), pero el mercado real cotiza muy por encima:</p>
+<ul>
+<li>Bitcoin cotiza en $64,033.85, subiendo 0.76% en 24 horas, con volumen un 104.7% por encima del promedio.</li>
+<li>Contexto reciente: Bitcoin comienza el segundo semestre cerca de $60,000 tras un mínimo fresco de 21 meses; el precio arrancó el año por encima de $93,000 y cerró junio alrededor de $60,000.</li>
+<li>Flujos ETF girando: los ETFs de bitcoin listados en EE.UU. registraron $221.7 millones en entradas, la mayor entrada diaria en dos meses, terminando una racha de 10 días de salidas; aun así, las salidas netas en lo que va de año siguen siendo pronunciadas, en unos $5.4 mil millones.</li>
+<li>Próximos catalizadores: audiencia del CLARITY Act el 17 de julio como próximo catalizador regulatorio, y la próxima reunión de la Reserva Federal el 28-29 de julio bajo Warsh, con el dato de inflación de junio (14 de julio) como input crítico.</li>
+</ul>
+<p>Recomiendo que actualices tu precio de entrada/actual en el tracker — con precio real ~$63.500-64.000, tu P&amp;L real en BTC ronda +15% sobre $55,240 de entrada, no +0.92%.</p>
+<hr />
+<h2>Semáforo</h2>
+<p>🟡 CIFR — insider Form 144 + brecha de seguridad sin resolver, pero contrato AWS/Stingray refuerza tesis; vigilar volatilidad
 🟢 LEU — contrato DOE $900M en firme, catalizador estructural, tesis reforzada con fuerza
 🟡 OKLO — hito regulatorio DOE aprobado, pero criticidad real (el catalizador que mueve la aguja) aún pendiente en julio
 🟢 CRDO — resultados récord (+157% YoY), caída de precio sin catalizador negativo, asimetría de compra clara
 🟢 IREN — backlog contratado en expansión (NVIDIA + Microsoft), caída de precio por rotación macro, no por negocio
-🟡 BTC — flujos ETF girando a positivo tras récord de salidas en junio, pero confirmación pendiente (CPI 14 jul, Fed 28-29 jul, CLARITY Act 17 jul)
-
-Esto no constituye asesoramiento de inversión personalizado.</pre>
+🟡 BTC — flujos ETF girando a positivo tras récord de salidas en junio, pero confirmación pendiente (CPI 14 jul, Fed 28-29 jul, CLARITY Act 17 jul)</p>
+<p>Esto no constituye asesoramiento de inversión personalizado.</p>
+</article>
+<footer>Generado automáticamente · no constituye asesoramiento de inversión personalizado</footer>
 </body>
 </html>
