@@ -98,10 +98,15 @@ def call_claude(prompt_base, contexto):
 
     response = client.messages.create(
         model=MODEL,
-        max_tokens=4000,
+        # Con 6 posiciones a buscar (5 acciones + BTC), las búsquedas web consumen buena
+        # parte del presupuesto de salida antes de llegar al texto final: con 4000 se
+        # cortaba la respuesta sin texto. Se sube el margen para evitarlo.
+        max_tokens=8000,
         tools=[{"type": "web_search_20250305", "name": "web_search"}],
         messages=[{"role": "user", "content": mensaje_usuario}],
     )
+
+    print(f"stop_reason: {response.stop_reason}, bloques de contenido: {len(response.content)}")
 
     texto_completo = "\n".join(
         block.text for block in response.content if block.type == "text"
