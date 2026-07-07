@@ -98,10 +98,12 @@ def call_claude(prompt_base, contexto):
 
     response = client.messages.create(
         model=MODEL,
-        # Con 6 posiciones a buscar (5 acciones + BTC), las búsquedas web consumen buena
-        # parte del presupuesto de salida antes de llegar al texto final: con 4000 se
-        # cortaba la respuesta sin texto. Se sube el margen para evitarlo.
-        max_tokens=8000,
+        # Con 6 posiciones a buscar (5 acciones + BTC), las búsquedas web + el análisis
+        # detallado consumen mucho presupuesto de salida: con 4000 se cortaba sin texto,
+        # con 8000 seguía cortándose (stop_reason=max_tokens con 76 bloques) antes del
+        # bloque JSON final. Se sube con más margen; solo se cobra por lo generado, no
+        # por el máximo fijado aquí.
+        max_tokens=16000,
         tools=[{"type": "web_search_20250305", "name": "web_search"}],
         messages=[{"role": "user", "content": mensaje_usuario}],
     )
@@ -111,7 +113,7 @@ def call_claude(prompt_base, contexto):
     texto_completo = "\n".join(
         block.text for block in response.content if block.type == "text"
     )
-    return texto_completo
+    return texto_completo, response.stop_reason
 
 
 def extraer_bloque_json(texto):
@@ -154,7 +156,7 @@ def main():
     contexto = build_context(state, precios_acciones, precio_btc)
 
     print("Llamando a Claude para el análisis...")
-    respuesta = call_claude(prompt_base, contexto)
+    respuesta, stop_reason = call_claude(prompt_base, contexto)
 
     actualizaciones = extraer_bloque_json(respuesta)
     state = actualizar_estado(state, actualizaciones, fecha_iso)
@@ -162,6 +164,7 @@ def main():
     state["historial_revisiones"].append({
         "fecha": fecha_iso,
         "resumen": respuesta[:500],  # primeros 500 caracteres como resumen en el historial
+        "cortado_por_tokens": stop_reason == "max_tokens",
     })
 
     save_state(state)
@@ -169,6 +172,11 @@ def main():
 
     # Quita el bloque JSON técnico antes de publicarlo en la página.
     respuesta_limpia = re.sub(r"```json.*?```", "", respuesta, flags=re.DOTALL).strip()
+    if stop_reason == "max_tokens":
+        respuesta_limpia += (
+            "\n\n---\n⚠️ Respuesta cortada por límite de tokens: puede faltar contenido "
+            "al final (incluidas las señales del semáforo)."
+        )
 
     DOCS_DIR.mkdir(exist_ok=True)
     (DOCS_DIR / "index.html").write_text(
