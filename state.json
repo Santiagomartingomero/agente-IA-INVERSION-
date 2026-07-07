@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "ultima_revision": null,
+    "fx_eur_usd": 1.08,
+    "nota": "Precios de entrada estimados por cálculo inverso (P&L % / precio actual) el 2026-07-07. Verificar contra el bróker y corregir a mano en cuanto se pueda."
+  },
+  "capa_2_alta_conviccion": {
+    "CIFR": {
+      "nombre": "Cipher Digital",
+      "precio_entrada": 22.17,
+      "precio_entrada_confianza": "estimado",
+      "moneda": "USD",
+      "ultima_senal": null,
+      "ultima_senal_fecha": null
+    },
+    "LEU": {
+      "nombre": "Centrus Energy",
+      "precio_entrada": 175.57,
+      "precio_entrada_confianza": "estimado",
+      "moneda": "USD",
+      "ultima_senal": null,
+      "ultima_senal_fecha": null
+    },
+    "OKLO": {
+      "nombre": "Oklo Inc",
+      "precio_entrada": 54.55,
+      "precio_entrada_confianza": "estimado",
+      "moneda": "USD",
+      "ultima_senal": null,
+      "ultima_senal_fecha": null
+    },
+    "CRDO": {
+      "nombre": "Credo Technology",
+      "precio_entrada": 289.54,
+      "precio_entrada_confianza": "estimado",
+      "moneda": "USD",
+      "ultima_senal": null,
+      "ultima_senal_fecha": null
+    },
+    "IREN": {
+      "nombre": "IREN Ltd",
+      "precio_entrada": 46.01,
+      "precio_entrada_confianza": "estimado",
+      "moneda": "USD",
+      "ultima_senal": null,
+      "ultima_senal_fecha": null
+    }
+  },
+  "capa_3_cripto": {
+    "BTC": {
+      "cantidad": 0.081,
+      "precio_entrada": 55240,
+      "precio_entrada_confianza": "estimado",
+      "moneda": "EUR",
+      "ultima_senal": null,
+      "ultima_senal_fecha": null
+    }
+  },
+  "capa_1_indexado": {
+    "nota": "Solo se revisa por desviación de rebalanceo o macro de consenso, no a diario.",
+    "pesos_objetivo": {
+      "MyInvestor_Nasdaq_100": null,
+      "Amundi_MSCI_Emerging_Markets": null,
+      "Fidelity_MSCI_Europe": null,
+      "Vanguard_Global_Small_Cap": null
+    },
+    "nota_pesos": "Rellenar pesos_objetivo (en %) cuando se decida la asignación estratégica. Sin esto el agente no puede detectar deriva de rebalanceo."
+  },
+  "historial_revisiones": []
+}
