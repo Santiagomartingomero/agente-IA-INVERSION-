@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": "2026-07-07T21:19:33.848462+00:00",
+    "ultima_revision": "2026-07-08T09:42:46.075183+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Precios de entrada estimados por cálculo inverso (P&L % / precio actual) el 2026-07-07. Verificar contra el bróker y corregir a mano en cuanto se pueda."
   },
@@ -10,8 +10,8 @@
       "precio_entrada": 22.17,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
-      "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-07T21:19:33.848462+00:00"
+      "ultima_senal": "🟢",
+      "ultima_senal_fecha": "2026-07-08T09:42:46.075183+00:00"
     },
     "LEU": {
       "nombre": "Centrus Energy",
@@ -19,15 +19,15 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-07T21:19:33.848462+00:00"
+      "ultima_senal_fecha": "2026-07-08T09:42:46.075183+00:00"
     },
     "OKLO": {
       "nombre": "Oklo Inc",
       "precio_entrada": 54.55,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
-      "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-07T21:19:33.848462+00:00"
+      "ultima_senal": "🟡",
+      "ultima_senal_fecha": "2026-07-08T09:42:46.075183+00:00"
     },
     "CRDO": {
       "nombre": "Credo Technology",
@@ -35,15 +35,15 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-07T21:19:33.848462+00:00"
+      "ultima_senal_fecha": "2026-07-08T09:42:46.075183+00:00"
     },
     "IREN": {
       "nombre": "IREN Ltd",
       "precio_entrada": 46.01,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
-      "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-07T21:19:33.848462+00:00"
+      "ultima_senal": "🟡",
+      "ultima_senal_fecha": "2026-07-08T09:42:46.075183+00:00"
     }
   },
   "capa_3_cripto": {
@@ -53,7 +53,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "EUR",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-07T21:19:33.848462+00:00"
+      "ultima_senal_fecha": "2026-07-08T09:42:46.075183+00:00"
     }
   },
   "capa_1_indexado": {
@@ -88,6 +88,11 @@
     {
       "fecha": "2026-07-07T21:19:33.848462+00:00",
       "resumen": "# Revisión Capa 2 + BTC — 07/07/2026\n\n## CIFR — Cipher Digital\n**Precio actual: $20.47 (entrada $22.17, -7.67%)**\n\nRuido de corto plazo mezclado con señales estructurales divergentes:\n- **Negativo, ya parcialmente en precio**: \nlas acciones cotizan a la baja tras reportes de una brecha de ciberseguridad crítica, además de que un insider u accionista mayoritario ha presentado un Form 144, señalando planes de venta de acciones restringidas\n. El Form 144 no confirma venta ejecutada, es intención — ",
+      "cortado_por_tokens": false
+    },
+    {
+      "fecha": "2026-07-08T09:42:46.075183+00:00",
+      "resumen": "Revisión Capa 2 y Capa 3 — 08/07/2026\n\n**CIFR (Cipher Digital)** — Entrada $22.17 / Actual $20.47 (-7.67%)\n\nLa primera fase de entrega de 300 MW de Cipher a AWS estaba programada para comenzar en julio de 2026, con inicio de renta en agosto — un contrato de arrendamiento a 15 años por $5.5B\n. Esto es el catalizador estructural clave: primer ingreso recurrente real, no narrativa. \nMorgan Stanley elevó su precio objetivo a $42.50 con calificación Overweight, mientras Rosenblatt describió la valora",
       "cortado_por_tokens": false
     }
   ]
