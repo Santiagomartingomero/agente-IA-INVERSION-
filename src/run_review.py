@@ -1,12 +1,5 @@
 """
-Orquesta la revisión diaria de la cartera:
-1. Lee state.json (posiciones, precios de entrada, última revisión).
-2. Obtiene precios actuales (Yahoo Finance para acciones, CoinGecko para BTC).
-3. Construye el prompt combinando prompt_base.md + estado + precios actuales.
-4. Llama a Gemini 2.0 Flash (con Google Search activado) para el análisis.
-5. Parsea el bloque JSON de actualización de señales al final de la respuesta.
-6. Actualiza y persiste state.json.
-7. Regenera docs/index.html (página de GitHub Pages).
+Orquesta la revisión diaria de la cartera con Google Gemini 2.0 Flash (gratuito).
 
 Requiere variable de entorno:
 - GEMINI_API_KEY   (gratuito en aistudio.google.com)
@@ -22,7 +15,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import google.generativeai as genai
-from google.generativeai.types import Tool, GenerationConfig
 
 from fetch_prices import fetch_stock_prices, fetch_btc_price_eur
 from generate_page import build_html
@@ -87,16 +79,15 @@ def call_gemini(prompt_base, contexto, model_name):
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     genai.configure(api_key=api_key)
 
-    # Google Search como herramienta nativa (equivalente al web_search de Claude)
-    google_search_tool = Tool(google_search={})
-
+    # Sintaxis correcta para google-generativeai >= 0.8
+    # google_search_retrieval como dict directo en tools
     model = genai.GenerativeModel(
         model_name=model_name,
-        tools=[google_search_tool],
-        generation_config=GenerationConfig(
-            temperature=0.3,
-            max_output_tokens=8192,
-        ),
+        tools=[{"google_search_retrieval": {}}],
+        generation_config={
+            "temperature": 0.3,
+            "max_output_tokens": 8192,
+        },
     )
 
     mensaje = (
@@ -109,11 +100,12 @@ def call_gemini(prompt_base, contexto, model_name):
 
     response = model.generate_content(mensaje)
 
+    finish_reason = response.candidates[0].finish_reason
     print(f"Modelo: {model_name}")
-    print(f"finish_reason: {response.candidates[0].finish_reason}")
+    print(f"finish_reason: {finish_reason}")
 
     texto = response.text
-    return texto, response.candidates[0].finish_reason
+    return texto, finish_reason
 
 
 def extraer_bloque_json(texto):
@@ -161,7 +153,7 @@ def main():
     state["historial_revisiones"].append({
         "fecha": fecha_iso,
         "resumen": respuesta[:500],
-        "cortado_por_tokens": str(finish_reason) == "MAX_TOKENS",
+        "cortado_por_tokens": str(finish_reason) == "FinishReason.MAX_TOKENS",
     })
     state["historial_revisiones"] = state["historial_revisiones"][-30:]
 
@@ -169,7 +161,7 @@ def main():
     print("Estado actualizado y guardado.")
 
     respuesta_limpia = re.sub(r"```json.*?```", "", respuesta, flags=re.DOTALL).strip()
-    if str(finish_reason) == "MAX_TOKENS":
+    if str(finish_reason) == "FinishReason.MAX_TOKENS":
         respuesta_limpia += "\n\n---\n⚠️ Respuesta cortada por límite de tokens."
 
     DOCS_DIR.mkdir(exist_ok=True)
