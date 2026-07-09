@@ -25,10 +25,19 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
+      - name: Verificar imports y version SDK
+        run: |
+          python -c "
+import google.generativeai as genai
+print('google-generativeai version:', genai.__version__)
+print('Import OK')
+"
+
       - name: Ejecutar revisión
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python src/run_review.py
+        run: python -u src/run_review.py
+        continue-on-error: false
 
       - name: Commit del estado actualizado
         run: |
