@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": "2026-07-09T10:34:26.713067+00:00",
+    "ultima_revision": "2026-07-09T10:41:26.497216+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Precios de entrada estimados por cálculo inverso (P&L % / precio actual) el 2026-07-07. Verificar contra el bróker y corregir a mano en cuanto se pueda."
   },
@@ -11,7 +11,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T10:34:26.713067+00:00"
+      "ultima_senal_fecha": "2026-07-09T10:41:26.497216+00:00"
     },
     "LEU": {
       "nombre": "Centrus Energy",
@@ -19,7 +19,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T10:34:26.713067+00:00"
+      "ultima_senal_fecha": "2026-07-09T10:41:26.497216+00:00"
     },
     "OKLO": {
       "nombre": "Oklo Inc",
@@ -27,7 +27,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T10:34:26.713067+00:00"
+      "ultima_senal_fecha": "2026-07-09T10:41:26.497216+00:00"
     },
     "CRDO": {
       "nombre": "Credo Technology",
@@ -35,15 +35,15 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T10:34:26.713067+00:00"
+      "ultima_senal_fecha": "2026-07-09T10:41:26.497216+00:00"
     },
     "IREN": {
       "nombre": "IREN Ltd",
       "precio_entrada": 46.01,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
-      "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T10:34:26.713067+00:00"
+      "ultima_senal": "🟢",
+      "ultima_senal_fecha": "2026-07-09T10:41:26.497216+00:00"
     }
   },
   "capa_3_cripto": {
@@ -53,7 +53,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "EUR",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T10:34:26.713067+00:00"
+      "ultima_senal_fecha": "2026-07-09T10:41:26.497216+00:00"
     }
   },
   "capa_1_indexado": {
@@ -98,6 +98,11 @@
     {
       "fecha": "2026-07-09T10:34:26.713067+00:00",
       "resumen": "# Revisión Capa 2 + BTC — 09/07/2026\n\n## CIFR (Cipher Digital) — $21.85 · P&L -1.44%\n\nDos catalizadores cruzados desde el 08/07:\n\n**Negativo (ya en precio, no estructural):** \nlas acciones cayeron tras reportes de una brecha de ciberseguridad crítica, y un insider filed Form 144 señalando venta de acciones restringidas\n. Esto generó un intradía de -12.65% y un tramo de $29→$19.97 en pocas sesiones. El lunes 6/7 hubo rebote fuerte: \ntras un selloff de doble dígito, los traders empezaron a rotar c",
+      "cortado_por_tokens": false
+    },
+    {
+      "fecha": "2026-07-09T10:41:26.497216+00:00",
+      "resumen": "**CIFR — Cipher Digital | $21.85 (-1.44% vs entrada $22.17)**\nInsider Form 144 presentado por un holder relevante, sin que esto implique per se venta ejecutada; \nun insider o gran accionista de Cipher Mining ha presentado un Form 144, señalando planes de vender acciones restringidas o de control bajo la Regla 144 de la SEC\n. Prensa financiera atribuyó parte de la caída a un supuesto \"cybersecurity breach\" — no encuentro confirmación oficial de Cipher ni SEC filing que lo sustente, lo trato como ",
       "cortado_por_tokens": false
     }
   ]
