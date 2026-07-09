@@ -10,6 +10,9 @@ Orquesta la revisión diaria de la cartera:
 
 Requiere variable de entorno:
 - ANTHROPIC_API_KEY
+
+Opcional:
+- CLAUDE_MODEL  (por defecto: claude-sonnet-5)
 """
 
 import os
@@ -28,7 +31,7 @@ STATE_PATH = REPO_ROOT / "state.json"
 PROMPT_PATH = REPO_ROOT / "prompt_base.md"
 DOCS_DIR = REPO_ROOT / "docs"
 
-MODEL = "claude-sonnet-5"
+DEFAULT_MODEL = "claude-sonnet-5"
 
 
 def load_state():
@@ -82,9 +85,7 @@ def build_context(state, precios_acciones, precio_btc):
     return contexto
 
 
-def call_claude(prompt_base, contexto):
-    # .strip(): algunos gestores de Secrets/portapapeles añaden un salto de línea al
-    # final de la clave pegada, lo que rompe la cabecera HTTP de autenticación.
+def call_claude(prompt_base, contexto, model):
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     client = anthropic.Anthropic(api_key=api_key)
 
@@ -97,17 +98,13 @@ def call_claude(prompt_base, contexto):
     )
 
     response = client.messages.create(
-        model=MODEL,
-        # Con 6 posiciones a buscar (5 acciones + BTC), las búsquedas web + el análisis
-        # detallado consumen mucho presupuesto de salida: con 4000 se cortaba sin texto,
-        # con 8000 seguía cortándose (stop_reason=max_tokens con 76 bloques) antes del
-        # bloque JSON final. Se sube con más margen; solo se cobra por lo generado, no
-        # por el máximo fijado aquí.
+        model=model,
         max_tokens=16000,
         tools=[{"type": "web_search_20250305", "name": "web_search"}],
         messages=[{"role": "user", "content": mensaje_usuario}],
     )
 
+    print(f"Modelo: {model}")
     print(f"stop_reason: {response.stop_reason}, bloques de contenido: {len(response.content)}")
 
     texto_completo = "\n".join(
@@ -144,6 +141,7 @@ def actualizar_estado(state, actualizaciones, fecha_iso):
 
 
 def main():
+    model = os.environ.get("CLAUDE_MODEL", DEFAULT_MODEL).strip()
     fecha_iso = datetime.now(timezone.utc).isoformat()
 
     state = load_state()
@@ -155,22 +153,24 @@ def main():
 
     contexto = build_context(state, precios_acciones, precio_btc)
 
-    print("Llamando a Claude para el análisis...")
-    respuesta, stop_reason = call_claude(prompt_base, contexto)
+    print(f"Llamando a Claude ({model}) para el análisis...")
+    respuesta, stop_reason = call_claude(prompt_base, contexto, model)
 
     actualizaciones = extraer_bloque_json(respuesta)
     state = actualizar_estado(state, actualizaciones, fecha_iso)
     state["meta"]["ultima_revision"] = fecha_iso
     state["historial_revisiones"].append({
         "fecha": fecha_iso,
-        "resumen": respuesta[:500],  # primeros 500 caracteres como resumen en el historial
+        "resumen": respuesta[:500],
         "cortado_por_tokens": stop_reason == "max_tokens",
     })
+
+    # Mantener historial acotado a las últimas 30 revisiones
+    state["historial_revisiones"] = state["historial_revisiones"][-30:]
 
     save_state(state)
     print("Estado actualizado y guardado.")
 
-    # Quita el bloque JSON técnico antes de publicarlo en la página.
     respuesta_limpia = re.sub(r"```json.*?```", "", respuesta, flags=re.DOTALL).strip()
     if stop_reason == "max_tokens":
         respuesta_limpia += (
@@ -180,7 +180,8 @@ def main():
 
     DOCS_DIR.mkdir(exist_ok=True)
     (DOCS_DIR / "index.html").write_text(
-        build_html(state, contexto, respuesta_limpia, fecha_iso), encoding="utf-8"
+        build_html(state, contexto, respuesta_limpia, fecha_iso, modelo=model),
+        encoding="utf-8"
     )
     print("Página docs/index.html regenerada.")
 
