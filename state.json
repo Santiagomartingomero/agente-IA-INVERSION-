@@ -2,19 +2,30 @@
   "meta": {
     "ultima_revision": "2026-07-09T10:48:42.073820+00:00",
     "fx_eur_usd": 1.08,
-    "nota": "Precios de entrada estimados por cálculo inverso (P&L % / precio actual) el 2026-07-07. Verificar contra el bróker y corregir a mano en cuanto se pueda."
+    "nota": "Posiciones de acciones y fondos actualizadas manualmente el 2026-07-09 con datos reales del bróker."
   },
   "capa_2_alta_conviccion": {
     "CIFR": {
-      "nombre": "Cipher Digital",
+      "nombre": "Cipher Mining Inc",
+      "valor_actual_usd": 3168.25,
       "precio_entrada": 22.17,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
       "ultima_senal_fecha": "2026-07-09T10:48:42.073820+00:00"
     },
+    "IREN": {
+      "nombre": "Iris Energy Ltd",
+      "valor_actual_usd": 2924.34,
+      "precio_entrada": 46.01,
+      "precio_entrada_confianza": "estimado",
+      "moneda": "USD",
+      "ultima_senal": "🟢",
+      "ultima_senal_fecha": "2026-07-09T10:48:42.073820+00:00"
+    },
     "LEU": {
-      "nombre": "Centrus Energy",
+      "nombre": "Centrus Energy Corp",
+      "valor_actual_usd": 2797.52,
       "precio_entrada": 175.57,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
@@ -22,7 +33,8 @@
       "ultima_senal_fecha": "2026-07-09T10:48:42.073820+00:00"
     },
     "OKLO": {
-      "nombre": "Oklo Inc",
+      "nombre": "Oklo Inc (ALTC Acquisition)",
+      "valor_actual_usd": 2362.00,
       "precio_entrada": 54.55,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
@@ -30,16 +42,9 @@
       "ultima_senal_fecha": "2026-07-09T10:48:42.073820+00:00"
     },
     "CRDO": {
-      "nombre": "Credo Technology",
+      "nombre": "Credo Technology Group",
+      "valor_actual_usd": 1810.83,
       "precio_entrada": 289.54,
-      "precio_entrada_confianza": "estimado",
-      "moneda": "USD",
-      "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T10:48:42.073820+00:00"
-    },
-    "IREN": {
-      "nombre": "IREN Ltd",
-      "precio_entrada": 46.01,
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
@@ -48,23 +53,56 @@
   },
   "capa_3_cripto": {
     "BTC": {
-      "cantidad": 0.081,
-      "precio_entrada": 55240,
-      "precio_entrada_confianza": "estimado",
-      "moneda": "EUR",
+      "cantidad": 0.08125209,
+      "precio_entrada": 64053.63,
+      "precio_entrada_confianza": "real",
+      "moneda": "USD",
+      "valor_actual_usd": 5093.25,
+      "pnl_pct": -2.14,
       "ultima_senal": "🟡",
       "ultima_senal_fecha": "2026-07-09T10:48:42.073820+00:00"
     }
   },
   "capa_1_indexado": {
-    "nota": "Solo se revisa por desviación de rebalanceo o macro de consenso, no a diario.",
-    "pesos_objetivo": {
-      "MyInvestor_Nasdaq_100": null,
-      "Amundi_MSCI_Emerging_Markets": null,
-      "Fidelity_MSCI_Europe": null,
-      "Vanguard_Global_Small_Cap": null
+    "nota": "Fondos indexados de largo plazo. Se revisan para detectar deriva de rebalanceo o señales macro de consenso. No se opera a diario.",
+    "posiciones": {
+      "MyInvestor_Nasdaq_100": {
+        "nombre": "MyInvestor Nasdaq 100",
+        "valor_eur": 13259.51,
+        "pnl_eur": 806.42,
+        "pnl_pct": 6.48,
+        "moneda": "EUR"
+      },
+      "Amundi_MSCI_Emerging_Markets": {
+        "nombre": "Amundi Index MSCI Emerging Markets",
+        "valor_eur": 9094.49,
+        "pnl_eur": -79.17,
+        "pnl_pct": -0.86,
+        "moneda": "EUR"
+      },
+      "Fidelity_MSCI_Europe": {
+        "nombre": "Fidelity MSCI Europe Index",
+        "valor_eur": 8107.56,
+        "pnl_eur": 322.42,
+        "pnl_pct": 4.14,
+        "moneda": "EUR"
+      },
+      "Vanguard_Global_Small_Cap": {
+        "nombre": "Vanguard Global Small-Cap Index",
+        "valor_eur": 4277.61,
+        "pnl_eur": 190.21,
+        "pnl_pct": 4.65,
+        "moneda": "EUR"
+      }
     },
-    "nota_pesos": "Rellenar pesos_objetivo (en %) cuando se decida la asignación estratégica. Sin esto el agente no puede detectar deriva de rebalanceo."
+    "valor_total_eur": 34739.17,
+    "pesos_objetivo": {
+      "MyInvestor_Nasdaq_100": 38,
+      "Amundi_MSCI_Emerging_Markets": 26,
+      "Fidelity_MSCI_Europe": 23,
+      "Vanguard_Global_Small_Cap": 13
+    },
+    "nota_pesos": "Pesos objetivo calculados proporcionalmente desde valores actuales. Ajustar si la asignación estratégica deseada difiere."
   },
   "historial_revisiones": [
     {
@@ -76,38 +114,8 @@
       "resumen": "# Revisión Capa 2 + BTC — 07/07/2026\n\n## CIFR — Cipher Digital\n**$20.47 (-7.67% vs entrada $22.17)**. Ojo con precio de mercado real: cotiza en rango $19.51–$21.72 hoy, con último cierre en zona $20.68-$20.47 dependiendo de la fuente — hay ruido de feed, no es una caída adicional de un día.\n\nCatalizador estructural, no está en precio del todo: \nel primer tramo de 300 MW de capacidad de Cipher para AWS arranca en julio 2026, con inicio de renta en agosto, bajo un contrato de 15 años y $5.500M\n. E"
     },
     {
-      "fecha": "2026-07-07T20:37:11.988120+00:00",
-      "resumen": "# REVISIÓN CAPA 2 + BTC — 07/07/2026\n\n## CIFR — Cipher Digital · $20.47 (-7.67% vs entrada $22.17)\nVolatilidad brutal: \ntras cerrar cerca de $29 a mediados de junio, CIFR cayó a unos $19.97 el 2/07/2026\n, con un intradía del -12% por \nun Form 144 de un insider/tenedor mayoritario señalando intención de vender acciones restringidas\n combinado con reporte de brecha de ciberseguridad. Lunes 6/07 rebote fuerte: \nacciones subiendo 10.35% hasta $22.11\n en rotación de compradores de la caída tras comen",
-      "cortado_por_tokens": false
-    },
-    {
-      "fecha": "2026-07-07T20:58:58.834391+00:00",
-      "resumen": "# Revisión Capa 2 + BTC — 07 Jul 2026\n\n## CIFR (Cipher Digital) — $20.47 (-7.67% desde entrada)\nCatalizadores mixtos desde inicio de mes:\n- **Negativo/ruido táctico**: \nlas acciones han bajado tras reportes de una brecha de ciberseguridad crítica, y un insider/tenedor mayoritario presentó un Form 144, señalizando intención de venta de acciones restringidas\n. Esto ya está parcialmente en precio — el valor cayó desde ~$29 a ~$20 en dos semanas.\n- **Estructural positivo, no descontado del todo**: \n",
-      "cortado_por_tokens": false
-    },
-    {
-      "fecha": "2026-07-07T21:19:33.848462+00:00",
-      "resumen": "# Revisión Capa 2 + BTC — 07/07/2026\n\n## CIFR — Cipher Digital\n**Precio actual: $20.47 (entrada $22.17, -7.67%)**\n\nRuido de corto plazo mezclado con señales estructurales divergentes:\n- **Negativo, ya parcialmente en precio**: \nlas acciones cotizan a la baja tras reportes de una brecha de ciberseguridad crítica, además de que un insider u accionista mayoritario ha presentado un Form 144, señalando planes de venta de acciones restringidas\n. El Form 144 no confirma venta ejecutada, es intención — ",
-      "cortado_por_tokens": false
-    },
-    {
-      "fecha": "2026-07-08T09:42:46.075183+00:00",
-      "resumen": "Revisión Capa 2 y Capa 3 — 08/07/2026\n\n**CIFR (Cipher Digital)** — Entrada $22.17 / Actual $20.47 (-7.67%)\n\nLa primera fase de entrega de 300 MW de Cipher a AWS estaba programada para comenzar en julio de 2026, con inicio de renta en agosto — un contrato de arrendamiento a 15 años por $5.5B\n. Esto es el catalizador estructural clave: primer ingreso recurrente real, no narrativa. \nMorgan Stanley elevó su precio objetivo a $42.50 con calificación Overweight, mientras Rosenblatt describió la valora",
-      "cortado_por_tokens": false
-    },
-    {
-      "fecha": "2026-07-09T10:34:26.713067+00:00",
-      "resumen": "# Revisión Capa 2 + BTC — 09/07/2026\n\n## CIFR (Cipher Digital) — $21.85 · P&L -1.44%\n\nDos catalizadores cruzados desde el 08/07:\n\n**Negativo (ya en precio, no estructural):** \nlas acciones cayeron tras reportes de una brecha de ciberseguridad crítica, y un insider filed Form 144 señalando venta de acciones restringidas\n. Esto generó un intradía de -12.65% y un tramo de $29→$19.97 en pocas sesiones. El lunes 6/7 hubo rebote fuerte: \ntras un selloff de doble dígito, los traders empezaron a rotar c",
-      "cortado_por_tokens": false
-    },
-    {
-      "fecha": "2026-07-09T10:41:26.497216+00:00",
-      "resumen": "**CIFR — Cipher Digital | $21.85 (-1.44% vs entrada $22.17)**\nInsider Form 144 presentado por un holder relevante, sin que esto implique per se venta ejecutada; \nun insider o gran accionista de Cipher Mining ha presentado un Form 144, señalando planes de vender acciones restringidas o de control bajo la Regla 144 de la SEC\n. Prensa financiera atribuyó parte de la caída a un supuesto \"cybersecurity breach\" — no encuentro confirmación oficial de Cipher ni SEC filing que lo sustente, lo trato como ",
-      "cortado_por_tokens": false
-    },
-    {
       "fecha": "2026-07-09T10:48:42.073820+00:00",
-      "resumen": "# REVISIÓN CAPA 2 + BTC — 09/07/2026\n\n## CIFR — Cipher Digital\n$21.85 (entrada $22.17, **-1.44%**). Sin ruptura de tesis.\n\n\nTras cerrar cerca de $29 a mediados de junio de 2026, CIFR cayó hasta cerca de $19.97 el 2/07\n por dos factores: \nun insider filed a Form 144, señalando planes de vender acciones restringidas bajo la Regla 144\n (rutinario, no material) y un reporte de brecha de ciberseguridad. Ya está en precio: \nel lunes 6/07 las acciones subían con fuerza tras una venta masiva de varios d",
+      "resumen": "# REVISIÓN CAPA 2 + BTC — 09/07/2026\n\n## CIFR — Cipher Digital\n$21.85 (entrada $22.17, **-1.44%**). Sin ruptura de tesis.\n",
       "cortado_por_tokens": false
     }
   ]
