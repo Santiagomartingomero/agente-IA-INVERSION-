@@ -27,7 +27,7 @@ jobs:
 
       - name: Ejecutar revision
         env:
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY2 }}
         run: python -u src/run_review.py
 
       - name: Commit del estado actualizado
