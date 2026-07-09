@@ -35,7 +35,18 @@
     line-height: 1.55;
   }
   h1 { font-size: 1.35rem; margin-bottom: 0.2rem; }
-  .fecha { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .fecha { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .modelo-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    background: var(--azul-bg);
+    color: var(--azul-fg);
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  /* ── Tarjetas semáforo ── */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -63,9 +74,10 @@
   }
   .badge.verde { background: var(--verde-bg); color: var(--verde-fg); }
   .badge.ambar { background: var(--ambar-bg); color: var(--ambar-fg); }
-  .badge.rojo { background: var(--rojo-bg); color: var(--rojo-fg); }
-  .badge.azul { background: var(--azul-bg); color: var(--azul-fg); }
-  .badge.neutro { background: var(--neutro-bg); color: var(--neutro-fg); }
+  .badge.rojo  { background: var(--rojo-bg);  color: var(--rojo-fg);  }
+  .badge.azul  { background: var(--azul-bg);  color: var(--azul-fg);  }
+  .badge.neutro{ background: var(--neutro-bg);color: var(--neutro-fg);}
+  /* ── Fondos indexados ── */
   .fondos-section {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -76,15 +88,80 @@
   .fondos-section h2 { font-size: 1rem; margin: 0 0 0.8rem; }
   .fondos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
   }
+  .fondo-card { padding: 0.5rem 0; }
   .fondo-nombre { color: var(--muted); font-size: 0.78rem; }
-  .fondo-valor { font-weight: 600; font-size: 0.95rem; }
-  .fondo-pnl { font-size: 0.82rem; font-weight: 600; }
+  .fondo-valor  { font-weight: 600; font-size: 0.95rem; }
+  .fondo-pnl   { font-size: 0.82rem; font-weight: 600; }
   .fondo-pnl.pos { color: var(--verde-fg); }
   .fondo-pnl.neg { color: var(--rojo-fg); }
-  .fondos-total { margin-top: 0.8rem; font-size: 0.9rem; font-weight: 700; border-top: 1px solid var(--border); padding-top: 0.6rem; }
+  /* Barra de deriva */
+  .deriva-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; }
+  .barra-wrap {
+    position: relative;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin-top: 0.25rem;
+    overflow: visible;
+  }
+  .barra-actual {
+    position: absolute;
+    top: 0; left: 0;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--azul-fg);
+    transition: width 0.4s;
+  }
+  .barra-objetivo {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 12px;
+    background: var(--ambar-fg);
+    border-radius: 1px;
+  }
+  .deriva-ok   { color: var(--verde-fg); }
+  .deriva-warn { color: var(--ambar-fg); }
+  .deriva-alert{ color: var(--rojo-fg);  }
+  .fondos-total {
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-top: 1px solid var(--border);
+    padding-top: 0.6rem;
+  }
+  /* ── Historial señales ── */
+  .historial-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+  .historial-section h2 { font-size: 1rem; margin: 0 0 0.8rem; }
+  .historial-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.82rem;
+  }
+  .historial-table th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .historial-table td {
+    padding: 0.35rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .historial-table td:first-child { text-align: left; color: var(--muted); }
+  /* ── Gráficas ── */
   .charts-section { margin-bottom: 2rem; }
   .charts-section h2 { font-size: 1.1rem; margin-bottom: 1rem; }
   .charts-grid {
@@ -106,17 +183,23 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
+  /* ── Análisis ── */
   article {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 0.5rem 1.5rem 1.25rem;
   }
-  article h2 { font-size: 1.05rem; margin: 1.4rem 0 0.5rem; padding-top: 0.6rem; border-top: 1px solid var(--border); }
-  article h2:first-child { border-top: none; padding-top: 0; margin-top: 1rem; }
   article h1 { font-size: 1.1rem; }
+  article h2 {
+    font-size: 1.05rem;
+    margin: 1.4rem 0 0.5rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+  }
+  article h2:first-child { border-top: none; padding-top: 0; margin-top: 1rem; }
   article hr { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
-  article p { margin: 0.6rem 0; }
+  article p  { margin: 0.6rem 0; }
   article ul { padding-left: 1.2rem; }
   article em { color: var(--muted); }
   article strong { color: var(--fg); }
@@ -124,55 +207,58 @@
 </style>
 </head>
 <body>
-<h1>Revisión diaria — Cartera IA / Cripto</h1>
-<div class="fecha">Última actualización: 2026-07-09 11:20 UTC</div>
+<h1>📊 Revisión diaria — Cartera IA / Cripto</h1>
+<div class="fecha">Última actualización: 2026-07-09 18:07 UTC</div>
+<span class="modelo-badge">🤖 claude-sonnet-5</span>
 
 <div class="grid">
   <div class="card">
     <div class="ticker">CIFR</div>
     <div class="nombre">Cipher Mining Inc</div>
-    <div class="precio">21.85</div>
-    <div class="pnl neg">-1.44%</div>
-    <span class="badge ambar">🟡 Vigilar</span>
+    <div class="precio">23.45</div>
+    <div class="pnl pos">+5.80%</div>
+    <span class="badge verde">🟢 Mantener / ampliar</span>
   </div>
   <div class="card">
     <div class="ticker">IREN</div>
     <div class="nombre">Iris Energy Ltd</div>
-    <div class="precio">43.01</div>
-    <div class="pnl neg">-6.53%</div>
+    <div class="precio">42.77</div>
+    <div class="pnl neg">-7.03%</div>
     <span class="badge ambar">🟡 Vigilar</span>
   </div>
   <div class="card">
     <div class="ticker">LEU</div>
     <div class="nombre">Centrus Energy Corp</div>
-    <div class="precio">166.47</div>
-    <div class="pnl neg">-5.18%</div>
+    <div class="precio">173.59</div>
+    <div class="pnl neg">-1.13%</div>
     <span class="badge verde">🟢 Mantener / ampliar</span>
   </div>
   <div class="card">
     <div class="ticker">OKLO</div>
     <div class="nombre">Oklo Inc (ALTC Acquisition)</div>
-    <div class="precio">47.28</div>
-    <div class="pnl neg">-13.33%</div>
+    <div class="precio">49.10</div>
+    <div class="pnl neg">-9.98%</div>
     <span class="badge ambar">🟡 Vigilar</span>
   </div>
   <div class="card">
     <div class="ticker">CRDO</div>
     <div class="nombre">Credo Technology Group</div>
-    <div class="precio">258.69</div>
-    <div class="pnl neg">-10.65%</div>
+    <div class="precio">271.93</div>
+    <div class="pnl neg">-6.08%</div>
     <span class="badge verde">🟢 Mantener / ampliar</span>
   </div>
   <div class="card">
     <div class="ticker">BTC</div>
     <div class="nombre">Bitcoin</div>
-    <div class="precio">54,851.00</div>
-    <div class="pnl neg">-14.37%</div>
+    <div class="precio">55,170.00</div>
+    <div class="pnl neg">-13.87%</div>
     <span class="badge ambar">🟡 Vigilar</span>
   </div>
 </div>
 
-<div class="fondos-section"><h2>📂 Fondos indexados — Capa 1</h2><div class="fondos-grid"><div><div class="fondo-nombre">MyInvestor Nasdaq 100</div><div class="fondo-valor">13,259.51 €</div><div class="fondo-pnl pos">+806.42 € &nbsp; +6.48%</div></div> <div><div class="fondo-nombre">Amundi Index MSCI Emerging Markets</div><div class="fondo-valor">9,094.49 €</div><div class="fondo-pnl neg">-79.17 € &nbsp; -0.86%</div></div> <div><div class="fondo-nombre">Fidelity MSCI Europe Index</div><div class="fondo-valor">8,107.56 €</div><div class="fondo-pnl pos">+322.42 € &nbsp; +4.14%</div></div> <div><div class="fondo-nombre">Vanguard Global Small-Cap Index</div><div class="fondo-valor">4,277.61 €</div><div class="fondo-pnl pos">+190.21 € &nbsp; +4.65%</div></div></div><div class="fondos-total">Total fondos: 34,739.17 €</div></div>
+<div class="fondos-section"><h2>📂 Fondos indexados — Capa 1</h2><div class="fondos-grid"><div class="fondo-card"><div class="fondo-nombre">MyInvestor Nasdaq 100</div><div class="fondo-valor">13,259.51 €</div><div class="fondo-pnl pos">+806.42 € &nbsp; +6.48%</div><div class="deriva-label">Peso actual: <strong>38.2%</strong> · Objetivo: 38% · <span class="deriva-ok">✓ Δ 0.2 pp</span></div><div class="barra-wrap">  <div class="barra-actual" style="width:38.2%"></div>  <div class="barra-objetivo" style="left:38%"></div></div></div> <div class="fondo-card"><div class="fondo-nombre">Amundi Index MSCI Emerging Markets</div><div class="fondo-valor">9,094.49 €</div><div class="fondo-pnl neg">-79.17 € &nbsp; -0.86%</div><div class="deriva-label">Peso actual: <strong>26.2%</strong> · Objetivo: 26% · <span class="deriva-ok">✓ Δ 0.2 pp</span></div><div class="barra-wrap">  <div class="barra-actual" style="width:26.2%"></div>  <div class="barra-objetivo" style="left:26%"></div></div></div> <div class="fondo-card"><div class="fondo-nombre">Fidelity MSCI Europe Index</div><div class="fondo-valor">8,107.56 €</div><div class="fondo-pnl pos">+322.42 € &nbsp; +4.14%</div><div class="deriva-label">Peso actual: <strong>23.3%</strong> · Objetivo: 23% · <span class="deriva-ok">✓ Δ 0.3 pp</span></div><div class="barra-wrap">  <div class="barra-actual" style="width:23.3%"></div>  <div class="barra-objetivo" style="left:23%"></div></div></div> <div class="fondo-card"><div class="fondo-nombre">Vanguard Global Small-Cap Index</div><div class="fondo-valor">4,277.61 €</div><div class="fondo-pnl pos">+190.21 € &nbsp; +4.65%</div><div class="deriva-label">Peso actual: <strong>12.3%</strong> · Objetivo: 13% · <span class="deriva-ok">✓ Δ 0.7 pp</span></div><div class="barra-wrap">  <div class="barra-actual" style="width:12.3%"></div>  <div class="barra-objetivo" style="left:13%"></div></div></div></div><div class="fondos-total">Total fondos: 34,739.17 €</div></div>
+
+<div class="historial-section"><h2>🕐 Historial de señales recientes</h2><table class="historial-table"><thead><tr><th>Fecha</th><th>CIFR</th><th>IREN</th><th>LEU</th><th>OKLO</th><th>CRDO</th><th>BTC</th></tr></thead><tbody><tr><td>2026-07-09</td><td>🟢</td><td>🟡</td><td>🟢</td><td>🟡</td><td>🟢</td><td>🟡</td></tr> <tr><td>2026-07-07</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div>
 
 <div class="charts-section">
   <h2>📈 Gráficas técnicas en tiempo real</h2>
@@ -187,80 +273,81 @@
 </div>
 
 <article>
-<h1>📊 Revisión diaria de cartera — 9 de julio de 2026</h1>
+<h1>Revisión diaria de cartera — 9 de julio de 2026</h1>
 <h2>Capa 1 — Fondos indexados: sin acción requerida hoy</h2>
-<p>Pesos actuales vs objetivo: Nasdaq 100 ~38,2% (obj. 38%), Emergentes ~26,2% (obj. 26%), Europa ~23,3% (obj. 23%), Small Cap ~12,3% (obj. 13%). <strong>Ninguna desviación supera el umbral de 5 pp</strong> → no se requiere rebalanceo.</p>
-<p>Contexto macro relevante: el mercado ha pasado de esperar recortes a temer una posible <strong>subida de tipos</strong>. 
-La Fed mantuvo el tipo de referencia sin cambios en 3,50%-3,75% en junio de 2026, y nueve de dieciocho funcionarios ven al menos una subida este año, con seis anticipando al menos dos
-. Además, 
-varios participantes señalaron escenarios en los que, en un contexto de mercado laboral estable, la inflación se mantendría elevada debido a la fuerte demanda relacionada con IA, el conflicto en Oriente Medio o los efectos de los aranceles
-. Esto es un viento en contra para el Nasdaq 100 (growth/tech), mientras que emergentes, Europa y small caps dependen más de la evolución del dólar y de si la Fed confirma sesgo restrictivo el 29 de julio. <strong>Fondos indexados: sin acción requerida hoy.</strong></p>
+<p>Con el total en ~34.739 €, los pesos actuales son: Nasdaq 100 ≈38,2%, Emergentes ≈26,2%, Europe ≈23,3%, Small Cap ≈12,3%. Todas las desviaciones respecto a los objetivos (38/26/23/13) son inferiores a 1 punto porcentual — <strong>muy por debajo del umbral de 5pp que activaría rebalanceo</strong>.</p>
+<p>Contexto macro relevante para la capa: la Fed mantiene el rango de tipos en 3,50%-3,75% y bajo el nuevo chairman Kevin Warsh ha adoptado un tono claramente hawkish: 
+"la decisión de tipos de interés de la Fed de julio de 2026, programada para el 29 de julio, representa un punto de inflexión crítico... con la tasa de fondos federales actualmente en 3,50% a 3,75% tras cuatro reuniones consecutivas sin cambios"
+. El mercado de futuros apunta a que 
+"hay un 74,9% de probabilidad de que la Fed mantenga los tipos... y pone las probabilidades de una subida de un cuarto de punto en 25,1%"
+, sin ningún escenario de recorte a la vista. Este entorno "higher-for-longer" es un viento en contra para el Nasdaq (valoraciones growth) y penaliza a emergentes vía dólar fuerte, mientras Europa y small caps globales permanecen relativamente estables sin catalizador propio hoy. <strong>Fondos indexados: sin acción requerida hoy.</strong></p>
 <hr />
 <h2>Capa 2 — Acciones de alta convicción</h2>
-<h3>🟡 CIFR (Cipher Mining/Cipher Digital) — P&amp;L -1,44%</h3>
-<p>Semana muy volátil: 
-las acciones cayeron en medio de un selloff en cripto y semiconductores, tras informes de que Meta Platforms está construyendo un servicio cloud para vender capacidad de cómputo IA excedente, lo que generó dudas sobre si la demanda de cómputo IA está sobrestimada
-. También hubo 
-un desplome del -12,65% por una brecha de ciberseguridad, junto con un Form 144 de un insider anunciando venta de acciones
-. En el lado positivo, 
-la primera fase de entrega de 300 MW a Amazon Web Services está prevista para julio de 2026, con inicio de renta en agosto, dentro de un contrato de 15 años y 5.500 millones de dólares
-, y 
-Morgan Stanley elevó su precio objetivo a 42,50 $ con calificación Overweight, mientras Rosenblatt describió la valoración como &quot;cada vez más atractiva&quot;
-. Señal: vigilar — catalizador AWS muy positivo a medio plazo, pero exceso de ruido de corto plazo (ciberseguridad + venta insider + sensibilidad a sentimiento IA/cripto).</p>
-<h3>🟡 IREN (Iris Energy) — P&amp;L -6,53%</h3>
-<p>La acción cayó cerca de un 23% en la semana del 1 de julio tras que Meta señalara planes de revender capacidad IA excedente, y tras una nota de Bernstein que argumentó que IREN &quot;va por detrás&quot; en construir un negocio enterprise
-. Sin embargo, 
-Iren fue mejorada a Buy por Freedom Capital tras la caída, el 6 de julio
-. Fundamentales siguen sólidos: 
-la compañía anunció en marzo la expansión de su flota a 150.000 GPUs, con una expectativa de ingresos anualizados de AI Cloud de más de 3.700 millones de dólares para finales de 2026
-. Señal: vigilar — alta beta (4,28), fuerte corrección reciente por temor a competencia de Meta, pero contratos y expansión de capacidad siguen intactos.</p>
-<h3>🟢 LEU (Centrus Energy) — P&amp;L -5,18%</h3>
-<p>Semana de catalizadores muy positivos: 
-Centrus firmó un contrato con el Departamento de Energía por una orden de tarea de 900 millones de dólares para producción comercial de HALEU, con el contrato total de enriquecimiento valorado en más de 1.000 millones de dólares incluyendo todas las opciones
+<h3>CIFR (Cipher Mining / Cipher Digital) — 23,46 $ (+5,8%)</h3>
+<p>La compañía se rebautizó como Cipher Digital y ha pivotado con fuerza hacia centros de datos HPC/IA para hyperscalers, dejando en segundo plano la minería de bitcoin. 
+"El Q1 2026 registró hitos de ejecución importantes, incluyendo un tercer arrendamiento hyperscale, financiación de bonos de 2.000 millones $ y buen progreso en múltiples centros de datos. Los ingresos cayeron a medida que la minería de bitcoin se reduce, pero los flujos de caja contratados a largo plazo posicionan el negocio para crecimiento duradero"
 . Además, 
-Centrus se unirá al índice S&amp;P SmallCap 600 antes de la apertura del 14 de julio de 2026, reemplazando a Whitestone REIT
-, y 
-la compañía reporta un backlog existente de LEU de 2.400 millones de dólares que la nueva capacidad de enriquecimiento ayudará a cumplir
-. Como contrapunto, 
-Centrus emergió como la acción más shorteada del sector energético, con un interés en corto del 22,28%
-, y cotiza con 
-un ratio P/E de 55,08, indicando una valoración elevada
-. Señal: mantener/ampliar — catalizadores estructurales (DOE, backlog, inclusión en índice) superan el ruido de corto plazo del sector energético.</p>
-<h3>🟡 OKLO — P&amp;L -13,33%</h3>
-<p>Gran hito regulatorio: 
-el Departamento de Energía aprobó el Análisis de Seguridad Documentado de Oklo para su reactor de prueba de isótopos Groves en Texas
-, con 
-primera criticidad prevista para julio de 2026
-. Aun así, 
-Oklo mantiene actualmente un Zacks Rank de 3 (Hold) mientras se acerca a lo que podría ser un hito operativo definitorio
-, y 
-tras el reciente rally, el mercado ahora exige evidencia más que simples hitos de proceso, y esa ventana se está cerrando rápidamente
-. Señal: vigilar — catalizador binario inminente (criticidad real), alta volatilidad, sin acción hasta confirmación operativa.</p>
-<h3>🟢 CRDO (Credo Technology) — P&amp;L -10,65%</h3>
+su filial Stingray Compute completó una colocación privada de 810 millones $ en notas senior garantizadas al 6,000% para financiar la construcción del centro HPC en Andrews, Texas
+. El sentimiento analista mejora: 
+"la calificación más reciente de analistas sobre CIFR es Compra con un precio objetivo de 32,00 $"
+, con Bernstein iniciando cobertura Outperform también en 32$.</p>
+<p><strong>Señal: 🟢 Mantener/ampliar</strong> — pivote estructural hacia IA/HPC con financiación asegurada y mejora de sentimiento analista, pese a la volatilidad ligada a bitcoin.</p>
+<h3>IREN (Iris Energy) — 42,78 $ (-7,03%)</h3>
+<p>Noticia destacada: 
+"la inclusión de Iris Energy en el Russell 1000 intensificó el interés en redes sociales, visto como validación de su trayectoria de crecimiento en infraestructura de IA... aunque se observó debilidad de precio inmediata tras el anuncio"
+. Hoy circulan también rumores de colaboración con NVIDIA: 
+"discusiones frecuentes hacen referencia a posibles avances con NVIDIA, incluyendo posible estatus de ejemplar para GPUs de próxima generación"
+. Sin embargo, el valor cae en preapertura junto a otros "neoclouds": el mercado indica que 
+"Why CoreWeave (CRWV), Nebius (NBIS), and IREN Stocks Are Falling in Pre-Market, 7/8/26"
+, aunque también hay voces contrarias: 
+"IREN Stock Soars as Analyst Says Buy the Dip"
+.</p>
+<p><strong>Señal: 🟡 Vigilar</strong> — narrativa IA sigue intacta pero alta volatilidad de corto plazo y correlación con el sector "neocloud" bajo presión.</p>
+<h3>LEU (Centrus Energy) — 173,59 $ (-1,13%)</h3>
+<p>Fundamentales sólidos: 
+"la inclusión refleja el papel creciente de Centrus en el fortalecimiento de la cadena de suministro de combustible nuclear de EE.UU."
+ tras asegurar un contrato HALEU con el DOE. Pero hay presión reciente en el valor: 
+"las acciones de Centrus Energy (NYSE:LEU) cayeron un 4,2% por la tarde después de que UBS redujera su precio objetivo a 170$ desde 195$, citando mayores costes operativos esperados"
+. El consenso sigue siendo alcista con 
+"un rating promedio de 'Compra' según 16 analistas, con un precio objetivo a 12 meses de 274,36 $, un incremento del 65,51% desde el último precio"
+.</p>
+<p><strong>Señal: 🟢 Mantener</strong> — tesis nuclear/HALEU intacta, contrato DOE relevante; el recorte de UBS es ruido de costes, no de tesis.</p>
+<h3>OKLO (Oklo Inc) — 49,11 $ (-9,98%)</h3>
+<p>Catalizador positivo: 
+"la aprobación de seguridad de la DOE para Oklo marca un hito importante a medida que la compañía se acerca a poner en marcha su primer reactor"
+, aunque 
+"este es el tipo de noticia que puede cambiarlo todo para una pequeña compañía nuclear. Pero el verdadero catalizador será cuando Groves alcance realmente la criticidad. Ese será el momento de la verdad"
+. A pesar del avance regulatorio, la acción sigue débil técnicamente: 
+"la acción enfrenta escrutinio de valoración, reflejando una caída del 17,5% en 30 días y una caída del 38,4% en el año"
+, y sigue siendo pre-revenue en 2026.</p>
+<p><strong>Señal: 🟡 Vigilar</strong> — catalizador regulatorio real pero sin ingresos a corto plazo y momentum técnico negativo; esperar confirmación en criticidad de Groves.</p>
+<h3>CRDO (Credo Technology) — 271,93 $ (-6,08%)</h3>
 <p>Fuerte impulso alcista de analistas: 
-BofA elevó su precio objetivo de 252 a 340 $, vinculando su calificación de Compra a una perspectiva más sólida del sector semiconductor hasta 2030, especialmente en data center, memoria, automoción e industrial
-. Además, 
-Evercore ISI inició cobertura con calificación Outperform y objetivo de 325 $, y Stifel elevó su objetivo de 250 a 350 $ tras varios días de reuniones con la dirección
-. Fundamentales robustos: 
-ingresos trimestrales de ~437 millones de dólares con margen bruto cercano al 68%, ingreso operativo de ~155,85 millones y neto de 169,10 millones
-. Contrapunto: 
-en junio de 2026 el CTO Chi Fung Cheng vendió 27.500 acciones por 6,8-7,5 millones de dólares, aunque mantiene alrededor de 6 millones de acciones
-. Señal: mantener/ampliar — consenso de analistas muy alcista y fundamentales fuertes compensan la venta insider y la valoración exigente (P/E ~68).</p>
+"Wall Street se volvió más alcista con CRDO después de que Evercore ISI iniciara cobertura con rating Outperform y precio objetivo de 325$... Stifel elevó su precio objetivo a 350$... BofA elevó su objetivo a 340$"
+. El negocio muestra 
+"ingresos de 437 millones $ en el Q4 2026, un incremento del 157,02% respecto al mismo periodo del año anterior"
+. Punto de atención: 
+"los insiders de Credo Technology han negociado la acción 295 veces en los últimos 6 meses, de las cuales 0 han sido compras y 295 ventas"
+.</p>
+<p><strong>Señal: 🟢 Mantener/ampliar</strong> — momentum de analistas muy fuerte y crecimiento de ingresos explosivo por demanda de conectividad IA; vigilar la venta continuada de insiders como único punto de fricción.</p>
 <hr />
 <h2>Capa 3 — Cripto (BTC)</h2>
-<p>Nota: el precio de mercado reciente difiere del reflejado en la posición de cartera; según fuentes de mercado, 
-al 9 de julio de 2026 el precio de Bitcoin se sitúa en 62.852 $, reflejando una recuperación frágil de corto plazo dentro de una estructura macro aún rota, mientras el Índice de Miedo y Codicia en 22 señala miedo extremo
-. Conviene verificar el precio de referencia del bróker, ya que difiere sensiblemente del dato de mercado.</p>
-<p>Catalizadores negativos recientes: 
-bitcoin y ethereum tienden a la baja tras la reanudación de hostilidades en Oriente Medio, después de que EEUU realizara ataques aéreos contra objetivos iraníes en represalia por disparos de Irán contra barcos no militares en el Estrecho de Ormuz
-. Además, 
-titulares de Bloomberg citando comentarios de Trump que reavivan las preocupaciones sobre la guerra con Irán, junto con la venta reportada de 216 millones de dólares en Bitcoin por parte de Strategy durante una reestructuración interna, no han inspirado confianza
-. En el plano de tipos, 
-el resultado de julio podría definirse en la reunión de la Fed del 28-29 de julio bajo Warsh, sin proyecciones económicas frescas hasta septiembre
-. Señal: vigilar — sentimiento de miedo extremo, estructura técnica rota por encima de 65.000 $, riesgo geopolítico y Fed hawkish; sin capitulación clara ni señal de giro alcista confirmado.</p>
+<p>Precio actual ~55.170 $ (-13,87% vs entrada). El contexto es claramente negativo: 
+"la caída dramática de Bitcoin por debajo del nivel psicológico de 60.000$ en julio de 2026 representa una de las rupturas técnicas más significativas de la historia reciente de la criptomoneda... empujando a BTC a un mínimo de 21 meses cerca de 58.000$"
+, impulsada por 
+"aproximadamente 4.500 millones $ en salidas netas de ETFs spot de Bitcoin en junio de 2026, con el IBIT de BlackRock representando el 75% de estas redenciones"
+. El sentimiento está en pánico extremo: 
+"el Índice de Miedo y Codicia se desplomó a 11, indicando miedo extremo en el mercado"
+.</p>
+<p>Hay señales mixtas para adelante: por un lado 
+"Bitcoin parece profundamente sobrevendido, y las apuestas apalancadas que impulsaron la caída se han eliminado en su mayoría... las ballenas han acumulado más de 270.000 BTC en las últimas dos semanas"
+; por otro, casas como Standard Chartered mantienen su objetivo alcista pese a la caída, 
+"calificando la caída como una oportunidad de compra"
+. El nivel crítico a vigilar es 
+"si los bajistas logran superar el nivel crítico de 55.000$, la previsión de precio de Bitcoin para el año será significativamente menor"
+ — justo el nivel donde cotiza actualmente la posición.</p>
+<p><strong>Señal: 🟡 Vigilar</strong> — posición en zona de soporte crítico ($55K), sin catalizador claro de reversión a corto plazo (Fed hawkish, ETFs en salida neta), pero contexto técnico de sobreventa extrema que desaconseja capitular en este punto.</p>
 <hr />
-<h2>📋 Resumen de señales</h2>
-<p><strong>Cambios respecto a la revisión previa:</strong> CIFR pasa de 🟢 a 🟡 (brecha de ciberseguridad + Form 144 + volatilidad ligada a dudas sobre demanda IA tras noticia de Meta). IREN pasa de 🟢 a 🟡 (caída ~23% por competencia potencial de Meta, pese a upgrade posterior). LEU y CRDO mantienen 🟢. OKLO mantiene 🟡 a la espera del hito de criticidad. BTC mantiene 🟡 por sentimiento de miedo extremo y riesgo geopolítico/Fed.</p>
 </article>
 
 <footer>Generado automáticamente · no constituye asesoramiento de inversión personalizado</footer>
