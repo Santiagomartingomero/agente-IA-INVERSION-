@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": "2026-07-09T18:07:52.620656+00:00",
+    "ultima_revision": "2026-07-09T19:45:35.934099+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Posiciones de acciones y fondos actualizadas manualmente el 2026-07-09 con datos reales del bróker."
   },
@@ -12,7 +12,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T18:07:52.620656+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:45:35.934099+00:00"
     },
     "IREN": {
       "nombre": "Iris Energy Ltd",
@@ -21,7 +21,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T18:07:52.620656+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:45:35.934099+00:00"
     },
     "LEU": {
       "nombre": "Centrus Energy Corp",
@@ -30,7 +30,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T18:07:52.620656+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:45:35.934099+00:00"
     },
     "OKLO": {
       "nombre": "Oklo Inc (ALTC Acquisition)",
@@ -39,7 +39,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T18:07:52.620656+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:45:35.934099+00:00"
     },
     "CRDO": {
       "nombre": "Credo Technology Group",
@@ -48,7 +48,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T18:07:52.620656+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:45:35.934099+00:00"
     }
   },
   "capa_3_cripto": {
@@ -60,7 +60,7 @@
       "valor_actual_usd": 5093.25,
       "pnl_pct": -2.14,
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T18:07:52.620656+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:45:35.934099+00:00"
     }
   },
   "capa_1_indexado": {
@@ -126,6 +126,11 @@
     {
       "fecha": "2026-07-09T18:07:52.620656+00:00",
       "resumen": "# Revisión diaria de cartera — 9 de julio de 2026\n\n## Capa 1 — Fondos indexados: sin acción requerida hoy\n\nCon el total en ~34.739 €, los pesos actuales son: Nasdaq 100 ≈38,2%, Emergentes ≈26,2%, Europe ≈23,3%, Small Cap ≈12,3%. Todas las desviaciones respecto a los objetivos (38/26/23/13) son inferiores a 1 punto porcentual — **muy por debajo del umbral de 5pp que activaría rebalanceo**.\n\nContexto macro relevante para la capa: la Fed mantiene el rango de tipos en 3,50%-3,75% y bajo el nuevo cha",
+      "cortado_por_tokens": false
+    },
+    {
+      "fecha": "2026-07-09T19:45:35.934099+00:00",
+      "resumen": "**Revisión diaria de cartera - 09/07/2026**\n\n### Fondos indexados: sin acción requerida hoy\n\nLos fondos indexados no presentan una deriva significativa respecto a los pesos objetivo. El contexto macro sigue siendo dinámico, con la Reserva Federal de EE.UU. (Fed) manteniendo su postura cautelosa sobre las tasas de interés. En Europa, la economía sigue mostrando signos de estabilidad, aunque la inflación sigue siendo una preocupación. En el mercado de emergentes, la situación económica y política ",
       "cortado_por_tokens": false
     }
   ]
