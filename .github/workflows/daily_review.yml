@@ -26,7 +26,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Verificar SDK Gemini
-        run: python -c 'import google.generativeai as genai; print("SDK version:", genai.__version__)'
+        run: python -c 'from google import genai; print("google-genai OK")'
 
       - name: Ejecutar revision
         env:

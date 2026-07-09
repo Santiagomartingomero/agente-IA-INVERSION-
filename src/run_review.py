@@ -1,5 +1,5 @@
 """
-Orquesta la revisión diaria de la cartera con Google Gemini 2.0 Flash (gratuito).
+Orquesta la revision diaria de la cartera con Google Gemini 2.0 Flash (gratuito).
 
 Requiere variable de entorno:
 - GEMINI_API_KEY   (gratuito en aistudio.google.com)
@@ -14,7 +14,8 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from fetch_prices import fetch_stock_prices, fetch_btc_price_eur
 from generate_page import build_html
@@ -77,28 +78,25 @@ def build_context(state, precios_acciones, precio_btc):
 
 def call_gemini(prompt_base, contexto, model_name):
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
-    genai.configure(api_key=api_key)
-
-    # Sintaxis correcta para google-generativeai >= 0.8
-    # google_search_retrieval como dict directo en tools
-    model = genai.GenerativeModel(
-        model_name=model_name,
-        tools=[{"google_search_retrieval": {}}],
-        generation_config={
-            "temperature": 0.3,
-            "max_output_tokens": 8192,
-        },
-    )
+    client = genai.Client(api_key=api_key)
 
     mensaje = (
         f"{prompt_base}\n\n"
         f"---\n"
         f"ESTADO ACTUAL DE LA CARTERA (JSON):\n"
         f"```json\n{json.dumps(contexto, indent=2, ensure_ascii=False)}\n```\n\n"
-        f"Realiza la revisión de hoy siguiendo las instrucciones anteriores."
+        f"Realiza la revision de hoy siguiendo las instrucciones anteriores."
     )
 
-    response = model.generate_content(mensaje)
+    response = client.models.generate_content(
+        model=model_name,
+        contents=mensaje,
+        config=types.GenerateContentConfig(
+            temperature=0.3,
+            max_output_tokens=8192,
+            tools=[types.Tool(google_search=types.GoogleSearch())],
+        ),
+    )
 
     finish_reason = response.candidates[0].finish_reason
     print(f"Modelo: {model_name}")
@@ -144,7 +142,7 @@ def main():
 
     contexto = build_context(state, precios_acciones, precio_btc)
 
-    print(f"Llamando a Gemini ({model_name}) para el análisis...")
+    print(f"Llamando a Gemini ({model_name})...")
     respuesta, finish_reason = call_gemini(prompt_base, contexto, model_name)
 
     actualizaciones = extraer_bloque_json(respuesta)
@@ -153,7 +151,7 @@ def main():
     state["historial_revisiones"].append({
         "fecha": fecha_iso,
         "resumen": respuesta[:500],
-        "cortado_por_tokens": str(finish_reason) == "FinishReason.MAX_TOKENS",
+        "cortado_por_tokens": "MAX_TOKENS" in str(finish_reason),
     })
     state["historial_revisiones"] = state["historial_revisiones"][-30:]
 
@@ -161,15 +159,15 @@ def main():
     print("Estado actualizado y guardado.")
 
     respuesta_limpia = re.sub(r"```json.*?```", "", respuesta, flags=re.DOTALL).strip()
-    if str(finish_reason) == "FinishReason.MAX_TOKENS":
-        respuesta_limpia += "\n\n---\n⚠️ Respuesta cortada por límite de tokens."
+    if "MAX_TOKENS" in str(finish_reason):
+        respuesta_limpia += "\n\n---\n Respuesta cortada por limite de tokens."
 
     DOCS_DIR.mkdir(exist_ok=True)
     (DOCS_DIR / "index.html").write_text(
         build_html(state, contexto, respuesta_limpia, fecha_iso, modelo=model_name),
         encoding="utf-8"
     )
-    print("Página docs/index.html regenerada.")
+    print("Pagina docs/index.html regenerada.")
 
 
 if __name__ == "__main__":
