@@ -3,16 +3,16 @@ Orquesta la revisión diaria de la cartera:
 1. Lee state.json (posiciones, precios de entrada, última revisión).
 2. Obtiene precios actuales (Yahoo Finance para acciones, CoinGecko para BTC).
 3. Construye el prompt combinando prompt_base.md + estado + precios actuales.
-4. Llama a la API de Claude (con web_search activado) para el análisis.
+4. Llama a Gemini 2.0 Flash (con Google Search activado) para el análisis.
 5. Parsea el bloque JSON de actualización de señales al final de la respuesta.
 6. Actualiza y persiste state.json.
-7. Regenera docs/index.html (página de GitHub Pages) con el semáforo y el análisis.
+7. Regenera docs/index.html (página de GitHub Pages).
 
 Requiere variable de entorno:
-- ANTHROPIC_API_KEY
+- GEMINI_API_KEY   (gratuito en aistudio.google.com)
 
 Opcional:
-- CLAUDE_MODEL  (por defecto: claude-sonnet-5)
+- GEMINI_MODEL     (por defecto: gemini-2.0-flash)
 """
 
 import os
@@ -21,7 +21,8 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-import anthropic
+import google.generativeai as genai
+from google.generativeai.types import Tool, GenerationConfig
 
 from fetch_prices import fetch_stock_prices, fetch_btc_price_eur
 from generate_page import build_html
@@ -31,7 +32,7 @@ STATE_PATH = REPO_ROOT / "state.json"
 PROMPT_PATH = REPO_ROOT / "prompt_base.md"
 DOCS_DIR = REPO_ROOT / "docs"
 
-DEFAULT_MODEL = "claude-sonnet-5"
+DEFAULT_MODEL = "gemini-2.0-flash"
 
 
 def load_state():
@@ -45,7 +46,6 @@ def save_state(state):
 
 
 def build_context(state, precios_acciones, precio_btc):
-    """Construye el bloque de contexto con estado + precios actuales para inyectar en el prompt."""
     contexto = {
         "ultima_revision": state["meta"]["ultima_revision"],
         "posiciones_capa_2": {},
@@ -58,7 +58,6 @@ def build_context(state, precios_acciones, precio_btc):
         pnl_pct = None
         if precio_actual and entrada:
             pnl_pct = round((precio_actual / entrada - 1) * 100, 2)
-
         contexto["posiciones_capa_2"][ticker] = {
             "nombre": datos["nombre"],
             "precio_entrada": entrada,
@@ -74,7 +73,6 @@ def build_context(state, precios_acciones, precio_btc):
     pnl_btc_pct = None
     if precio_btc_actual and entrada_btc:
         pnl_btc_pct = round((precio_btc_actual / entrada_btc - 1) * 100, 2)
-
     contexto["posicion_btc"] = {
         "cantidad": btc_data["cantidad"],
         "precio_entrada": entrada_btc,
@@ -85,11 +83,23 @@ def build_context(state, precios_acciones, precio_btc):
     return contexto
 
 
-def call_claude(prompt_base, contexto, model):
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
-    client = anthropic.Anthropic(api_key=api_key)
+def call_gemini(prompt_base, contexto, model_name):
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    genai.configure(api_key=api_key)
 
-    mensaje_usuario = (
+    # Google Search como herramienta nativa (equivalente al web_search de Claude)
+    google_search_tool = Tool(google_search={})
+
+    model = genai.GenerativeModel(
+        model_name=model_name,
+        tools=[google_search_tool],
+        generation_config=GenerationConfig(
+            temperature=0.3,
+            max_output_tokens=8192,
+        ),
+    )
+
+    mensaje = (
         f"{prompt_base}\n\n"
         f"---\n"
         f"ESTADO ACTUAL DE LA CARTERA (JSON):\n"
@@ -97,24 +107,16 @@ def call_claude(prompt_base, contexto, model):
         f"Realiza la revisión de hoy siguiendo las instrucciones anteriores."
     )
 
-    response = client.messages.create(
-        model=model,
-        max_tokens=16000,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
-        messages=[{"role": "user", "content": mensaje_usuario}],
-    )
+    response = model.generate_content(mensaje)
 
-    print(f"Modelo: {model}")
-    print(f"stop_reason: {response.stop_reason}, bloques de contenido: {len(response.content)}")
+    print(f"Modelo: {model_name}")
+    print(f"finish_reason: {response.candidates[0].finish_reason}")
 
-    texto_completo = "\n".join(
-        block.text for block in response.content if block.type == "text"
-    )
-    return texto_completo, response.stop_reason
+    texto = response.text
+    return texto, response.candidates[0].finish_reason
 
 
 def extraer_bloque_json(texto):
-    """Busca un bloque ```json ... ``` al final de la respuesta con las actualizaciones de señal."""
     match = re.search(r"```json\s*(\{.*?\})\s*```", texto, re.DOTALL)
     if not match:
         return None
@@ -127,21 +129,18 @@ def extraer_bloque_json(texto):
 def actualizar_estado(state, actualizaciones, fecha_iso):
     if not actualizaciones:
         return state
-
     for ticker, senal in actualizaciones.get("capa_2_alta_conviccion", {}).items():
         if ticker in state["capa_2_alta_conviccion"]:
             state["capa_2_alta_conviccion"][ticker]["ultima_senal"] = senal
             state["capa_2_alta_conviccion"][ticker]["ultima_senal_fecha"] = fecha_iso
-
     if "BTC" in actualizaciones.get("capa_3_cripto", {}):
         state["capa_3_cripto"]["BTC"]["ultima_senal"] = actualizaciones["capa_3_cripto"]["BTC"]
         state["capa_3_cripto"]["BTC"]["ultima_senal_fecha"] = fecha_iso
-
     return state
 
 
 def main():
-    model = os.environ.get("CLAUDE_MODEL", DEFAULT_MODEL).strip()
+    model_name = os.environ.get("GEMINI_MODEL", DEFAULT_MODEL).strip()
     fecha_iso = datetime.now(timezone.utc).isoformat()
 
     state = load_state()
@@ -153,8 +152,8 @@ def main():
 
     contexto = build_context(state, precios_acciones, precio_btc)
 
-    print(f"Llamando a Claude ({model}) para el análisis...")
-    respuesta, stop_reason = call_claude(prompt_base, contexto, model)
+    print(f"Llamando a Gemini ({model_name}) para el análisis...")
+    respuesta, finish_reason = call_gemini(prompt_base, contexto, model_name)
 
     actualizaciones = extraer_bloque_json(respuesta)
     state = actualizar_estado(state, actualizaciones, fecha_iso)
@@ -162,25 +161,20 @@ def main():
     state["historial_revisiones"].append({
         "fecha": fecha_iso,
         "resumen": respuesta[:500],
-        "cortado_por_tokens": stop_reason == "max_tokens",
+        "cortado_por_tokens": str(finish_reason) == "MAX_TOKENS",
     })
-
-    # Mantener historial acotado a las últimas 30 revisiones
     state["historial_revisiones"] = state["historial_revisiones"][-30:]
 
     save_state(state)
     print("Estado actualizado y guardado.")
 
     respuesta_limpia = re.sub(r"```json.*?```", "", respuesta, flags=re.DOTALL).strip()
-    if stop_reason == "max_tokens":
-        respuesta_limpia += (
-            "\n\n---\n⚠️ Respuesta cortada por límite de tokens: puede faltar contenido "
-            "al final (incluidas las señales del semáforo)."
-        )
+    if str(finish_reason) == "MAX_TOKENS":
+        respuesta_limpia += "\n\n---\n⚠️ Respuesta cortada por límite de tokens."
 
     DOCS_DIR.mkdir(exist_ok=True)
     (DOCS_DIR / "index.html").write_text(
-        build_html(state, contexto, respuesta_limpia, fecha_iso, modelo=model),
+        build_html(state, contexto, respuesta_limpia, fecha_iso, modelo=model_name),
         encoding="utf-8"
     )
     print("Página docs/index.html regenerada.")
