@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": "2026-07-09T19:48:47.101413+00:00",
+    "ultima_revision": "2026-07-09T19:57:03.770920+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Posiciones de acciones y fondos actualizadas manualmente el 2026-07-09 con datos reales del bróker."
   },
@@ -12,7 +12,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T19:48:47.101413+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:57:03.770920+00:00"
     },
     "IREN": {
       "nombre": "Iris Energy Ltd",
@@ -21,7 +21,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T19:48:47.101413+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:57:03.770920+00:00"
     },
     "LEU": {
       "nombre": "Centrus Energy Corp",
@@ -30,7 +30,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T19:48:47.101413+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:57:03.770920+00:00"
     },
     "OKLO": {
       "nombre": "Oklo Inc (ALTC Acquisition)",
@@ -39,7 +39,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T19:48:47.101413+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:57:03.770920+00:00"
     },
     "CRDO": {
       "nombre": "Credo Technology Group",
@@ -48,7 +48,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-09T19:48:47.101413+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:57:03.770920+00:00"
     }
   },
   "capa_3_cripto": {
@@ -60,7 +60,7 @@
       "valor_actual_usd": 5093.25,
       "pnl_pct": -2.14,
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-09T19:48:47.101413+00:00"
+      "ultima_senal_fecha": "2026-07-09T19:57:03.770920+00:00"
     }
   },
   "capa_1_indexado": {
@@ -136,6 +136,11 @@
     {
       "fecha": "2026-07-09T19:48:47.101413+00:00",
       "resumen": "## Revisión diaria de cartera\n\n### Fondos indexados: sin acción requerida hoy\nLos fondos indexados no presentan una deriva significativa respecto a los pesos objetivo, por lo que no se requiere acción de rebalanceo en este momento. El contexto macro sigue siendo favorable para los mercados emergentes y el Nasdaq, aunque la situación en Europa y el sector de pequeñas capitalizaciones globales sigue siendo más cautelosa.\n\n### Acciones de alta convicción\n- **CIFR (Cipher Mining)**: Precio actual 23",
+      "cortado_por_tokens": false
+    },
+    {
+      "fecha": "2026-07-09T19:57:03.770920+00:00",
+      "resumen": "# Agente de Inversión — Newsletter Diaria\n## 1. 📰 APERTURA — El mercado hoy en 3 líneas\nEl mercado global sigue mostrando signos de debilidad debido a las preocupaciones sobre la inflación y el crecimiento económico. Los inversores están a la espera de las decisiones de la Reserva Federal sobre los tipos de interés. El dólar estadounidense sigue siendo una moneda refugio en medio de la incertidumbre.\n\n## 2. 🌍 CONTEXTO MACRO Y TENDENCIAS\nLa situación actual de la economía global está marcada por ",
       "cortado_por_tokens": false
     }
   ]
