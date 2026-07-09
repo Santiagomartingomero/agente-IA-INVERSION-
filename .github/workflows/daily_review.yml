@@ -1,4 +1,4 @@
-name: Revisión diaria de cartera
+name: Revision diaria de cartera
 
 on:
   schedule:
@@ -25,26 +25,20 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Verificar imports y version SDK
-        run: |
-          python -c "
-import google.generativeai as genai
-print('google-generativeai version:', genai.__version__)
-print('Import OK')
-"
+      - name: Verificar SDK Gemini
+        run: python -c 'import google.generativeai as genai; print("SDK version:", genai.__version__)'
 
-      - name: Ejecutar revisión
+      - name: Ejecutar revision
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python -u src/run_review.py
-        continue-on-error: false
 
       - name: Commit del estado actualizado
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add state.json docs/index.html
-          git diff --cached --quiet || git commit -m "chore: actualiza state.json y página $(date -u +'%Y-%m-%d')"
+          git diff --cached --quiet || git commit -m "chore: actualiza state.json y pagina $(date -u +'%Y-%m-%d')"
           git push
 
       - name: Subir artefacto para GitHub Pages
