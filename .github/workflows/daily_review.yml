@@ -25,12 +25,9 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Verificar SDK Gemini
-        run: python -c 'from google import genai; print("google-genai OK")'
-
       - name: Ejecutar revision
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: python -u src/run_review.py
 
       - name: Commit del estado actualizado

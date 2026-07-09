@@ -1,11 +1,11 @@
 """
-Orquesta la revision diaria de la cartera con Google Gemini 2.0 Flash (gratuito).
+Orquesta la revision diaria de la cartera con Groq + Llama 3.3 70B (gratuito).
 
 Requiere variable de entorno:
-- GEMINI_API_KEY   (gratuito en aistudio.google.com)
+- GROQ_API_KEY   (gratuito en console.groq.com)
 
 Opcional:
-- GEMINI_MODEL     (por defecto: gemini-2.0-flash)
+- GROQ_MODEL     (por defecto: llama-3.3-70b-versatile)
 """
 
 import os
@@ -14,8 +14,7 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-from google import genai
-from google.genai import types
+from groq import Groq
 
 from fetch_prices import fetch_stock_prices, fetch_btc_price_eur
 from generate_page import build_html
@@ -25,7 +24,7 @@ STATE_PATH = REPO_ROOT / "state.json"
 PROMPT_PATH = REPO_ROOT / "prompt_base.md"
 DOCS_DIR = REPO_ROOT / "docs"
 
-DEFAULT_MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "llama-3.3-70b-versatile"
 
 
 def load_state():
@@ -76,33 +75,38 @@ def build_context(state, precios_acciones, precio_btc):
     return contexto
 
 
-def call_gemini(prompt_base, contexto, model_name):
-    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
-    client = genai.Client(api_key=api_key)
+def call_groq(prompt_base, contexto, model_name):
+    api_key = os.environ.get("GROQ_API_KEY", "").strip()
+    client = Groq(api_key=api_key)
 
+    # Groq no tiene web_search nativo, pero el prompt indica a Llama
+    # que razone sobre los precios recibidos y el contexto macro conocido.
+    # Para noticias en tiempo real se puede anadir una llamada previa a
+    # fetch_prices que ya trae variacion diaria como proxy de novedad.
     mensaje = (
         f"{prompt_base}\n\n"
         f"---\n"
         f"ESTADO ACTUAL DE LA CARTERA (JSON):\n"
         f"```json\n{json.dumps(contexto, indent=2, ensure_ascii=False)}\n```\n\n"
+        f"NOTA: No tienes acceso a internet en tiempo real. Usa los precios actuales "
+        f"y variaciones del JSON anterior como base. Razona sobre el contexto macro "
+        f"reciente que conoces y emite las senales con la mejor informacion disponible. "
         f"Realiza la revision de hoy siguiendo las instrucciones anteriores."
     )
 
-    response = client.models.generate_content(
+    response = client.chat.completions.create(
         model=model_name,
-        contents=mensaje,
-        config=types.GenerateContentConfig(
-            temperature=0.3,
-            max_output_tokens=8192,
-            tools=[types.Tool(google_search=types.GoogleSearch())],
-        ),
+        messages=[{"role": "user", "content": mensaje}],
+        temperature=0.3,
+        max_tokens=8192,
     )
 
-    finish_reason = response.candidates[0].finish_reason
+    finish_reason = response.choices[0].finish_reason
     print(f"Modelo: {model_name}")
     print(f"finish_reason: {finish_reason}")
+    print(f"Tokens usados: {response.usage.total_tokens}")
 
-    texto = response.text
+    texto = response.choices[0].message.content
     return texto, finish_reason
 
 
@@ -130,7 +134,7 @@ def actualizar_estado(state, actualizaciones, fecha_iso):
 
 
 def main():
-    model_name = os.environ.get("GEMINI_MODEL", DEFAULT_MODEL).strip()
+    model_name = os.environ.get("GROQ_MODEL", DEFAULT_MODEL).strip()
     fecha_iso = datetime.now(timezone.utc).isoformat()
 
     state = load_state()
@@ -142,8 +146,8 @@ def main():
 
     contexto = build_context(state, precios_acciones, precio_btc)
 
-    print(f"Llamando a Gemini ({model_name})...")
-    respuesta, finish_reason = call_gemini(prompt_base, contexto, model_name)
+    print(f"Llamando a Groq ({model_name})...")
+    respuesta, finish_reason = call_groq(prompt_base, contexto, model_name)
 
     actualizaciones = extraer_bloque_json(respuesta)
     state = actualizar_estado(state, actualizaciones, fecha_iso)
@@ -151,7 +155,7 @@ def main():
     state["historial_revisiones"].append({
         "fecha": fecha_iso,
         "resumen": respuesta[:500],
-        "cortado_por_tokens": "MAX_TOKENS" in str(finish_reason),
+        "cortado_por_tokens": finish_reason == "length",
     })
     state["historial_revisiones"] = state["historial_revisiones"][-30:]
 
@@ -159,7 +163,7 @@ def main():
     print("Estado actualizado y guardado.")
 
     respuesta_limpia = re.sub(r"```json.*?```", "", respuesta, flags=re.DOTALL).strip()
-    if "MAX_TOKENS" in str(finish_reason):
+    if finish_reason == "length":
         respuesta_limpia += "\n\n---\n Respuesta cortada por limite de tokens."
 
     DOCS_DIR.mkdir(exist_ok=True)
