@@ -1,23 +1,27 @@
 """
-Genera docs/index.html: una página estática con tarjetas de semáforo por posición y el
-análisis completo del día en formato legible, pensada para GitHub Pages.
+Genera docs/index.html: página estática con tarjetas de semáforo, gráficas
+interactivas de TradingView, sección de fondos indexados y análisis del día.
 """
 
 import html as html_lib
+import json as _json
 import re
 
 import markdown
 
 _INICIO_ITEM = re.compile(r"^\s*[-*]\s+")
 
+TV_SYMBOLS = {
+    "CIFR": "NASDAQ:CIFR",
+    "IREN": "NASDAQ:IREN",
+    "LEU": "AMEX:LEU",
+    "OKLO": "NYSE:OKLO",
+    "CRDO": "NASDAQ:CRDO",
+    "BTC": "BITSTAMP:BTCUSD",
+}
+
 
 def _separar_listas(texto):
-    """Inserta una línea en blanco antes del primer ítem de una lista.
-
-    Claude no siempre deja línea en blanco entre un párrafo y la lista que le
-    sigue, y el parser de markdown solo reconoce listas separadas por una línea
-    en blanco — sin este arreglo, los guiones quedan como texto literal.
-    """
     lineas = texto.split("\n")
     salida = []
     for i, linea in enumerate(lineas):
@@ -27,6 +31,7 @@ def _separar_listas(texto):
                 salida.append("")
         salida.append(linea)
     return "\n".join(salida)
+
 
 SEÑAL_INFO = {
     "🟢": {"clase": "verde", "etiqueta": "Mantener / ampliar"},
@@ -65,7 +70,7 @@ PAGINA_TEMPLATE = """<!doctype html>
   * {{ box-sizing: border-box; }}
   body {{
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    max-width: 780px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 1.5rem 1rem 3rem;
     background: var(--bg);
@@ -76,7 +81,7 @@ PAGINA_TEMPLATE = """<!doctype html>
   .fecha {{ color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }}
   .grid {{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 0.75rem;
     margin-bottom: 2rem;
   }}
@@ -104,6 +109,46 @@ PAGINA_TEMPLATE = """<!doctype html>
   .badge.rojo {{ background: var(--rojo-bg); color: var(--rojo-fg); }}
   .badge.azul {{ background: var(--azul-bg); color: var(--azul-fg); }}
   .badge.neutro {{ background: var(--neutro-bg); color: var(--neutro-fg); }}
+  .fondos-section {{
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }}
+  .fondos-section h2 {{ font-size: 1rem; margin: 0 0 0.8rem; }}
+  .fondos-grid {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.6rem;
+  }}
+  .fondo-nombre {{ color: var(--muted); font-size: 0.78rem; }}
+  .fondo-valor {{ font-weight: 600; font-size: 0.95rem; }}
+  .fondo-pnl {{ font-size: 0.82rem; font-weight: 600; }}
+  .fondo-pnl.pos {{ color: var(--verde-fg); }}
+  .fondo-pnl.neg {{ color: var(--rojo-fg); }}
+  .fondos-total {{ margin-top: 0.8rem; font-size: 0.9rem; font-weight: 700; border-top: 1px solid var(--border); padding-top: 0.6rem; }}
+  .charts-section {{ margin-bottom: 2rem; }}
+  .charts-section h2 {{ font-size: 1.1rem; margin-bottom: 1rem; }}
+  .charts-grid {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1rem;
+  }}
+  .chart-card {{
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }}
+  .chart-label {{
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.55rem 1rem 0.3rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }}
   article {{
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -124,13 +169,33 @@ PAGINA_TEMPLATE = """<!doctype html>
 <body>
 <h1>Revisión diaria — Cartera IA / Cripto</h1>
 <div class="fecha">Última actualización: {fecha}</div>
+
 <div class="grid">
   {tarjetas}
 </div>
+
+{fondos_html}
+
+<div class="charts-section">
+  <h2>📈 Gráficas técnicas en tiempo real</h2>
+  <div class="charts-grid">
+    {charts}
+  </div>
+</div>
+
 <article>
 {analisis_html}
 </article>
+
 <footer>Generado automáticamente · no constituye asesoramiento de inversión personalizado</footer>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+(function() {{
+  var configs = {tv_configs};
+  configs.forEach(function(cfg) {{ new TradingView.widget(cfg); }});
+}})();
+</script>
 </body>
 </html>
 """
@@ -171,23 +236,87 @@ def _tarjeta(ticker, nombre, contexto_posicion, senal):
     )
 
 
+def _fondos_html(state):
+    fondos = state.get("capa_1_indexado", {}).get("posiciones", {})
+    if not fondos:
+        return ""
+    total = state["capa_1_indexado"].get("valor_total_eur", 0)
+    items = []
+    for _, f in fondos.items():
+        pnl_pct = f.get("pnl_pct", 0)
+        pnl_eur = f.get("pnl_eur", 0)
+        pnl_clase = "pos" if pnl_pct >= 0 else "neg"
+        signo = "+" if pnl_eur >= 0 else ""
+        items.append(
+            f'<div>'
+            f'<div class="fondo-nombre">{html_lib.escape(f["nombre"])}</div>'
+            f'<div class="fondo-valor">{f["valor_eur"]:,.2f} €</div>'
+            f'<div class="fondo-pnl {pnl_clase}">{signo}{pnl_eur:.2f} € &nbsp; {signo}{pnl_pct:.2f}%</div>'
+            f'</div>'
+        )
+    return (
+        '<div class="fondos-section">'
+        '<h2>📂 Fondos indexados — Capa 1</h2>'
+        f'<div class="fondos-grid">{" ".join(items)}</div>'
+        f'<div class="fondos-total">Total fondos: {total:,.2f} €</div>'
+        '</div>'
+    )
+
+
+def _build_charts(tickers_nombres):
+    chart_divs = []
+    tv_configs = []
+    for ticker, nombre in tickers_nombres:
+        symbol = TV_SYMBOLS.get(ticker, ticker)
+        cid = f"tv_{ticker.replace('-', '_')}"
+        chart_divs.append(
+            f'<div class="chart-card">'
+            f'<div class="chart-label">{html_lib.escape(ticker)} — {html_lib.escape(nombre)}</div>'
+            f'<div id="{cid}"></div>'
+            f'</div>'
+        )
+        tv_configs.append({
+            "autosize": True,
+            "symbol": symbol,
+            "interval": "D",
+            "timezone": "Europe/Madrid",
+            "theme": "dark",
+            "style": "1",
+            "locale": "es",
+            "enable_publishing": False,
+            "hide_top_toolbar": False,
+            "save_image": False,
+            "container_id": cid,
+            "height": 380,
+            "width": "100%",
+        })
+    return "\n    ".join(chart_divs), _json.dumps(tv_configs, ensure_ascii=False)
+
+
 def build_html(state, contexto, respuesta_limpia, fecha_iso):
     tarjetas = []
+    tickers_nombres = []
+
     for ticker, datos in state["capa_2_alta_conviccion"].items():
         ctx_pos = contexto["posiciones_capa_2"].get(ticker, {})
         tarjetas.append(_tarjeta(ticker, datos["nombre"], ctx_pos, datos.get("ultima_senal")))
+        tickers_nombres.append((ticker, datos["nombre"]))
 
     btc = state["capa_3_cripto"]["BTC"]
     tarjetas.append(_tarjeta("BTC", "Bitcoin", contexto["posicion_btc"], btc.get("ultima_senal")))
+    tickers_nombres.append(("BTC", "Bitcoin"))
 
-    # Escapar el texto antes de convertirlo a HTML: el análisis incluye contenido de
-    # búsquedas web (no confiable) y esta página es pública en GitHub Pages, así que
-    # cualquier HTML/script literal debe quedar inerte en vez de ejecutarse.
+    fondos_html = _fondos_html(state)
+    charts_html, tv_configs = _build_charts(tickers_nombres)
+
     texto_escapado = _separar_listas(html_lib.escape(respuesta_limpia))
     analisis_html = markdown.markdown(texto_escapado, extensions=["extra"])
 
     return PAGINA_TEMPLATE.format(
         fecha=html_lib.escape(fecha_iso.replace("T", " ")[:16] + " UTC"),
         tarjetas="\n  ".join(tarjetas),
+        fondos_html=fondos_html,
+        charts=charts_html,
+        tv_configs=tv_configs,
         analisis_html=analisis_html,
     )
