@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": "2026-07-20T10:25:44.533960+00:00",
+    "ultima_revision": "2026-07-21T10:03:18.859907+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Posiciones de acciones y fondos actualizadas manualmente el 2026-07-09 con datos reales del bróker."
   },
@@ -12,7 +12,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-20T10:25:44.533960+00:00"
+      "ultima_senal_fecha": "2026-07-21T10:03:18.859907+00:00"
     },
     "IREN": {
       "nombre": "Iris Energy Ltd",
@@ -21,7 +21,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-20T10:25:44.533960+00:00"
+      "ultima_senal_fecha": "2026-07-21T10:03:18.859907+00:00"
     },
     "LEU": {
       "nombre": "Centrus Energy Corp",
@@ -30,7 +30,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-20T10:25:44.533960+00:00"
+      "ultima_senal_fecha": "2026-07-21T10:03:18.859907+00:00"
     },
     "OKLO": {
       "nombre": "Oklo Inc (ALTC Acquisition)",
@@ -39,7 +39,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-20T10:25:44.533960+00:00"
+      "ultima_senal_fecha": "2026-07-21T10:03:18.859907+00:00"
     },
     "CRDO": {
       "nombre": "Credo Technology Group",
@@ -48,7 +48,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-07-20T10:25:44.533960+00:00"
+      "ultima_senal_fecha": "2026-07-21T10:03:18.859907+00:00"
     }
   },
   "capa_3_cripto": {
@@ -60,7 +60,7 @@
       "valor_actual_usd": 5093.25,
       "pnl_pct": -2.14,
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-07-20T10:25:44.533960+00:00"
+      "ultima_senal_fecha": "2026-07-21T10:03:18.859907+00:00"
     }
   },
   "capa_1_indexado": {
@@ -196,6 +196,11 @@
     {
       "fecha": "2026-07-20T10:25:44.533960+00:00",
       "resumen": "### 1. 📰 APERTURA — El mercado hoy en 3 líneas\nEl mercado global se encuentra en un estado de cautela, con los inversores pendientes de las decisiones de política monetaria de los bancos centrales y los datos macroeconómicos recientes. Los mercados de acciones han experimentado una volatilidad moderada, mientras que el sector de las criptomonedas sigue mostrando signos de debilidad. La atención se centra en la próxima reunión del Fed y sus posibles implicaciones para los mercados financieros.\n\n#",
+      "cortado_por_tokens": false
+    },
+    {
+      "fecha": "2026-07-21T10:03:18.859907+00:00",
+      "resumen": "# Agente de Inversión — Newsletter Diaria\n## 1. 📰 APERTURA — El mercado hoy en 3 líneas\nEl mercado global sigue mostrando signos de debilidad debido a las preocupaciones sobre la inflación y el crecimiento económico. Los inversores están a la espera de las decisiones de las autoridades monetarias, especialmente la Fed, para determinar los próximos pasos en sus carteras. La volatilidad en los mercados de acciones y criptomonedas sigue siendo alta.\n\n## 2. 🌍 CONTEXTO MACRO Y TENDENCIAS\nLa situación",
       "cortado_por_tokens": false
     }
   ]
