@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ultima_revision": "2026-08-10T08:57:56.976578+00:00",
+    "ultima_revision": "2026-08-11T08:30:55.052835+00:00",
     "fx_eur_usd": 1.08,
     "nota": "Posiciones de acciones y fondos actualizadas manualmente el 2026-07-09 con datos reales del bróker."
   },
@@ -12,7 +12,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-08-10T08:57:56.976578+00:00"
+      "ultima_senal_fecha": "2026-08-11T08:30:55.052835+00:00"
     },
     "IREN": {
       "nombre": "Iris Energy Ltd",
@@ -21,7 +21,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-08-10T08:57:56.976578+00:00"
+      "ultima_senal_fecha": "2026-08-11T08:30:55.052835+00:00"
     },
     "LEU": {
       "nombre": "Centrus Energy Corp",
@@ -30,7 +30,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-08-10T08:57:56.976578+00:00"
+      "ultima_senal_fecha": "2026-08-11T08:30:55.052835+00:00"
     },
     "OKLO": {
       "nombre": "Oklo Inc (ALTC Acquisition)",
@@ -39,7 +39,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-08-10T08:57:56.976578+00:00"
+      "ultima_senal_fecha": "2026-08-11T08:30:55.052835+00:00"
     },
     "CRDO": {
       "nombre": "Credo Technology Group",
@@ -48,7 +48,7 @@
       "precio_entrada_confianza": "estimado",
       "moneda": "USD",
       "ultima_senal": "🟢",
-      "ultima_senal_fecha": "2026-08-10T08:57:56.976578+00:00"
+      "ultima_senal_fecha": "2026-08-11T08:30:55.052835+00:00"
     }
   },
   "capa_3_cripto": {
@@ -60,7 +60,7 @@
       "valor_actual_usd": 5093.25,
       "pnl_pct": -2.14,
       "ultima_senal": "🟡",
-      "ultima_senal_fecha": "2026-08-10T08:57:56.976578+00:00"
+      "ultima_senal_fecha": "2026-08-11T08:30:55.052835+00:00"
     }
   },
   "capa_1_indexado": {
@@ -105,11 +105,6 @@
     "nota_pesos": "Pesos objetivo calculados proporcionalmente desde valores actuales. Ajustar si la asignación estratégica deseada difiere."
   },
   "historial_revisiones": [
-    {
-      "fecha": "2026-07-12T09:27:36.824876+00:00",
-      "resumen": "## 1. 📰 APERTURA — El mercado hoy en 3 líneas\nEl mercado global se encuentra en un estado de incertidumbre, con los inversores pendientes de las decisiones de la Reserva Federal sobre los tipos de interés y su impacto en la economía. Los mercados de acciones han mostrado una tendencia a la baja en las últimas sesiones, influenciados por las preocupaciones sobre la inflación y el crecimiento económico. La volatilidad en los mercados financieros sigue siendo alta, lo que refleja la ansiedad de los",
-      "cortado_por_tokens": false
-    },
     {
       "fecha": "2026-07-13T10:39:36.455719+00:00",
       "resumen": "# Agente de Inversión — Newsletter Diaria\n## 1. 📰 APERTURA — El mercado hoy en 3 líneas\nEl mercado global sigue mostrando signos de debilidad debido a las preocupaciones sobre la inflación y el crecimiento económico. Los inversores están a la espera de las decisiones de la Fed sobre los tipos de interés. La volatilidad en los mercados de acciones y criptomonedas sigue siendo alta.\n\n## 2. 🌍 CONTEXTO MACRO Y TENDENCIAS\nLa situación actual de la economía global está siendo influenciada por varios f",
@@ -253,6 +248,11 @@
     {
       "fecha": "2026-08-10T08:57:56.976578+00:00",
       "resumen": "# Agente de Inversión — Newsletter Diaria\n## 1. 📰 APERTURA — El mercado hoy en 3 líneas\nEl mercado global sigue bajo la influencia de las decisiones de política monetaria de los bancos centrales, con el ojo puesto en la próxima reunión de la Fed. Los mercados de acciones muestran signos de debilidad, mientras que el dólar sigue firme. La volatilidad en los mercados de criptomonedas persiste, con el precio del Bitcoin experimentando fluctuaciones significativas.\n\n## 2. 🌍 CONTEXTO MACRO Y TENDENCI",
+      "cortado_por_tokens": false
+    },
+    {
+      "fecha": "2026-08-11T08:30:55.052835+00:00",
+      "resumen": "# Agente de Inversión — Newsletter Diaria\n## 1. 📰 APERTURA — El mercado hoy en 3 líneas\nEl mercado global sigue mostrando signos de debilidad debido a las preocupaciones sobre la inflación y el crecimiento económico. Los inversores están a la espera de las próximas decisiones de la Fed y otros bancos centrales para determinar el rumbo de los mercados. La volatilidad sigue siendo alta, lo que refleja la incertidumbre en el mercado.\n\n## 2. 🌍 CONTEXTO MACRO Y TENDENCIAS\nLa situación actual de la ec",
       "cortado_por_tokens": false
     }
   ]
